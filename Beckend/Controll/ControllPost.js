@@ -1,15 +1,15 @@
-import { Post } from "../Model/Post.js";
+// import { Post } from "../Model/Post.js";
 
-export  const addPost=async (req,res)=>{
-    const {
-        background,
-        caption,
-    }=req.body
+// export  const addPost=async (req,res)=>{
+//     const {
+//         background,
+//         caption,
+//     }=req.body
 
-     const {user_id} = req.params;
+//      const {user_id} = req.params;
 
-    const newPost  = await Post.create({
-        caption,background,user_id
-    })
-    res.send(newPost)
-}
+//     const newPost  = await Post.create({
+//         caption,background,user_id
+//     })
+//     res.send(newPost)
+// }

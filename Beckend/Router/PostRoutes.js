@@ -1,6 +1,6 @@
-import express from "express"
-import { addPost } from "../Controll/ControllPost.js"
+// import express from "express"
+// import { addPost } from "../Controll/ControllPost.js"
 
-export const PostRouter = express.Router()
+// export const PostRouter = express.Router()
 
-PostRouter.post('/post-add',addPost)
+// PostRouter.post('/post-add',addPost)

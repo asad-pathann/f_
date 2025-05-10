@@ -1,1 +1,12 @@
 @import "tailwindcss";
+
+.hide_scroll::-webkit-scrollbar-thumb {
+  width: 0 !important;
+  height: 0 !important;
+}
+
+@media (max-width: 950px) {
+  .icons_div {
+    display: none;
+  }
+}
