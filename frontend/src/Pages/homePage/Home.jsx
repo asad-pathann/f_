@@ -17,7 +17,7 @@ const Home = () => {
           <Sidebar />
         </div>
         {/* main content */}
-        <div className="md:col-span-6 col-span-12">
+        <div className="md:col-span-8 lg:col-span-6 col-span-12">
           <MainContent />
         </div>
         {/* add sectrion */}

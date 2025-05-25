@@ -125,7 +125,7 @@ const LoginFrom = () => {
 
         <hr className="h-[1px] bg-gray-400 border-0 " />
 
-        <button className="bg-[#42B72A] p-3 font-semibold sm:w-full  cursor-pointer  rounded-md text-white md:w-1/2 md:whitespace-nowrap     my-5  mx-auto  block ">
+        <button className="bg-[#42B72A] p-3 font-semibold sm:w-full  cursor-pointer  rounded-md text-white md:w-[60%] md:whitespace-nowrap     my-5  mx-auto  block ">
           <Link to={"/register"}>Create New Accout</Link>
         </button>
       </form>

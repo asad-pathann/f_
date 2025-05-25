@@ -1,6 +1,6 @@
 import * as React from "react";
 import Modal from "@mui/material/Modal";
-import { FaUserCircle, FaUserFriends } from "react-icons/fa";
+import { FaBeer, FaUserCircle, FaUserFriends } from "react-icons/fa";
 import { TiArrowSortedDown } from "react-icons/ti";
 import { BsEmojiSmile } from "react-icons/bs";
 import { RiArrowLeftSLine } from "react-icons/ri";
@@ -8,6 +8,7 @@ import { RiArrowLeftSLine } from "react-icons/ri";
 import { colors } from "@mui/material";
 import { Colors_data } from "../../date/color_data";
 import { motion } from "framer-motion";
+import { useSelector } from "react-redux";
 
 export default function BasicModal() {
   const [open, setOpen] = React.useState(false);
@@ -21,15 +22,38 @@ export default function BasicModal() {
   const handleCLose = () => {
     setOpen(false);
   };
+  // state mangement
+  const [selectColor, setselectColor] = React.useState({
+    startColor: "#fff",
+    endColor: "#fff",
+    image: "",
+  });
 
+  const [caption, setcpation] = React.useState("");
+
+  const [change, setchange] = React.useState(false);
+
+  const [show, setshow] = React.useState(false);
+  const { startColor, endColor } = selectColor;
+
+  React.useEffect(() => {
+    // caption.length > 0  setshow(false) : setshow(true)
+    if (caption.length > 0) {
+      setshow(false);
+    } else {
+      setshow(true);
+    }
+  });
+
+  const { user } = useSelector((state) => state.auth);
   return (
     <div>
       <div
         onClick={handleOpen}
         className="bg-gray-200 p-[7px] flex items-center rounded-full w-full cursor-pointer"
       >
-        <h3 className="font-semibold w-full capitalize text-gray-500">
-          What's your name min?
+        <h3 className="font-semibold w-full  capitalize text-gray-500">
+          What's your name {user?.f_name}?
         </h3>
       </div>
 
@@ -43,21 +67,30 @@ export default function BasicModal() {
         {/* Backdrop ke andar content center karna */}
         <div
           onClick={handleCLose}
-          className={`flex items-center justify-center h-screen `}
+          className={`flex  items-center justify-center h-screen `}
         >
           <div
             onClick={(e) => e.stopPropagation(handleCLose)}
-            className="bg-white p-6 rounded-xl shadow-xl w-[90%] md:w-[60%] xl:w-[35%]"
+            className="bg-white relative rounded-xl shadow-xl w-[90%] md:w-[60%] xl:w-[35%]"
           >
-            <h3 className="text-center text-2xl font-semibold mb-4">
+            {/* cros  div X  */}
+            <div
+              onClick={handleClose}
+              className="flex justify-center items-center p-3  h-[30px] w-[30px] bg-gray-200 rounded-full absolute top-[20px] right-[10px]"
+            >
+              <h3 className="font-bold text-1xl">X</h3>
+            </div>
+            <h3 className="text-center p-3  text-[20px] font-bold mb-2 ">
               Create Post
             </h3>
             <hr className="mb-4 bg-gray-300 border-0 h-[1px]" />
             {/* user div  */}
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 p-3 ">
               <FaUserCircle className="text-gray-400 text-4xl" />
               <div className="flex flex-col">
-                <h3 className="font-semibold text-md">username</h3>
+                <h3 className="font-semibold capitalize text-md">
+                  {user?.f_name} {user?.l_name}
+                </h3>
                 <div className="flex items-center gap-1 bg-gray-300 rounded-md">
                   <FaUserFriends className="text-sm" />
                   <p className="text-sm">friend</p>
@@ -67,15 +100,41 @@ export default function BasicModal() {
             </div>
 
             {/* text area  */}
-            <textarea
+            <div
               name=""
-              rows={5}
-              placeholder="Whats youe mind "
-              className="w-full text-2xl my-3 outline-0 resize-none"
+              style={{
+                background:
+                  startColor == ""
+                    ? `url${selectColor?.image}`
+                    : `linear-gradient(${startColor},${endColor})`,
+                backgroundPosition: "center center",
+                backgroundSize: "cover",
+              }}
+              placeholder={`Whats youe ${user?.f_name} `}
+              className={`w-full text-xl my-3 h-[200px] text-black ${
+                change &&
+                "h-[350px] text-white flex items-center justify-center"
+              }  cap outline-0 relative  resize-none transition-all duration-150`}
               id=""
-            ></textarea>
+            >
+              <p className={`absolute h-[full] ${show ? "block" : "hidden"}`}>
+                what your mind ? user Nmae
+              </p>
+              <input
+                onChange={(e) => setcpation(e.target.value)}
+                value={caption}
+                type="text"
+                className={`${
+                  change
+                    ? "w-full font-semibold  text-center h-full"
+                    : "h-[50px]"
+                } mb-2 outline-0 resize-none `}
+                name=""
+                id=""
+              />
+            </div>
 
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between p-3  items-center">
               {openColor ? (
                 <>
                   <div
@@ -84,15 +143,39 @@ export default function BasicModal() {
                   >
                     <RiArrowLeftSLine size={25} />
                   </div>
-                  {Colors_data?.map((item, indx) => {
+                  {Colors_data?.map((item, index) => {
                     return (
                       <motion.div
-                        initial={{ scale: 0, y: indx * 10 }}
-                        animate={{ scale: 1, y: "0" }}
+                        key={index} // Added key prop
+                        onClick={() => {
+                          console.log(index === 8);
+                          setselectColor(
+                            index === 8
+                              ? {
+                                  startColor: "",
+                                  endColor: "",
+                                  image: item?.image,
+                                }
+                              : {
+                                  startColor: item?.startColor,
+                                  endColor: item?.endColor,
+                                  image: "", // reset image if it's not the image option
+                                }
+                          );
+
+                          setchange(index == 0 ? false : true);
+                        }}
+                        initial={{ scale: 0, x: index * 10 }}
+                        animate={{ scale: 1, x: "0" }}
                         transition={{ duration: 0.4 }}
-                        className={`h-[30px] w-[30px] rounded-md  `}
+                        className={`h-[30px] w-[30px] shadow-gray-300 shadow rounded-md  `}
                         style={{
-                          background: `linear-gradient(to right,${item?.startColor}, ${item?.endColor})`,
+                          background:
+                            index == 8
+                              ? `url(${item?.image})`
+                              : `linear-gradient(to right,${item?.startColor}, ${item?.endColor})`,
+                          backgroundPosition: "center center",
+                          backgroundSize: "cover",
                         }}
                       ></motion.div>
                     );
