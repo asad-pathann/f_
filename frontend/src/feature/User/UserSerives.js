@@ -9,3 +9,8 @@ export const Userserives = async (userData) => {
   }
   return response.data;
 };
+
+export const UserLogin = async (userData) => {
+  const response = await axios.post(`${base_url}/login`, userData);
+  return response.data;
+};

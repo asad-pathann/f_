@@ -9,46 +9,46 @@ export const create_data = [
   {
     id: 1,
     title: "Create",
-    icons: <IoCreateOutline size={25} />,
+    icons: <IoCreateOutline size={20} />,
   },
   {
     id: 2,
     title: "Store",
-    icons: <IoBook size={25} />,
+    icons: <IoBook size={20} />,
   },
   {
     id: 3,
     title: "Reel",
-    icons: <PiFilmReelDuotone size={25} />,
+    icons: <PiFilmReelDuotone size={20} />,
   },
   {
     id: 4,
     title: "Life Event",
-    icons: <TbStarFilled size={25} />,
+    icons: <TbStarFilled size={20} />,
   },
   {
     id: 5,
     title: "Page",
-    icons: <IoFlag size={25} />,
+    icons: <IoFlag size={20} />,
   },
   {
     id: 6,
     title: "Add",
-    icons: <HiSpeakerphone size={25} />,
+    icons: <HiSpeakerphone size={20} />,
   },
   {
     id: 7,
     title: "Group",
-    icons: <HiUserGroup size={25} />,
+    icons: <HiUserGroup size={20} />,
   },
   {
     id: 8,
     title: "Enevt",
-    icons: <MdEventNote size={25} />,
+    icons: <MdEventNote size={20} />,
   },
   {
     id: 8,
     title: "Market palce ",
-    icons: <FaLandmark size={25} />,
+    icons: <FaLandmark size={20} />,
   },
 ];

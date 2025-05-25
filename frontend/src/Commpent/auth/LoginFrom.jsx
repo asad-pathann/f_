@@ -1,52 +1,78 @@
-import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash, FaRegEye } from "react-icons/fa";
 import { IoEye } from "react-icons/io5";
-
-
+import { useDispatch, useSelector } from "react-redux";
+import { reg_login, userReset } from "../../feature/User/UserSlice";
+import toast from "react-hot-toast";
 
 const LoginFrom = () => {
-     const [controll,setcontroll] = useState({
-        email:"",
-        password:""
-     })
+  const [controll, setcontroll] = useState({
+    email: "",
+    password: "",
+  });
 
-    //  state sction
-     const [showEye,setshowEye] = useState(false)
-      const [ShowPass,setShowPass] = useState(false)
-    //  
-     const handleControll = (e)=>{
-        setcontroll({
-            ...controll,
-            [e.target.name] : e.target.value
-        })
-     }
-      const {email,password} = controll
+  const dispacth = useDispatch();
+  const navagite = useNavigate();
 
- 
- useEffect(()=>{
-if(password.length > 0 ){
-  setshowEye(true)
+  //  state sction
+  const [showEye, setshowEye] = useState(false);
+  const [ShowPass, setShowPass] = useState(false);
+  //
+  const handleControll = (e) => {
+    setcontroll({
+      ...controll,
+      [e.target.name]: e.target.value,
+    });
+  };
+  const { email, password } = controll;
 
-}
-else{
-setshowEye(false)
-}
+  useEffect(() => {
+    if (password.length > 0) {
+      setshowEye(true);
+    } else {
+      setshowEye(false);
+    }
+  }, [password]);
 
- },[password])
- 
- 
- 
+  const { user, userLoading, userSuccess, userMessage, userError } =
+    useSelector((state) => state.auth);
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    const userData = {
+      password,
+      email,
+    };
+
+    dispacth(reg_login(userData));
+  };
+
+  useEffect(() => {
+    if (userError) {
+      toast.error(userMessage);
+    }
+    if (userSuccess) {
+      navagite("/home");
+      toast.success("Successfully !   ");
+    }
+    dispacth(userReset());
+  }, [userError, userSuccess]);
+
   return (
-    < >
-      
-      <form className='p-6  rounded-md bg-white  '>
-    <input
-
-autoComplete='email'
-    value={email}
-    onChange={handleControll} type="text" placeholder='inter your name ' className='w-full border border-gray-400   rounded-md outline-0 p-3 ' name="" id="" />
-    {/* <div className='relative'>
+    <>
+      <form className="p-6  rounded-md bg-white  ">
+        <input
+          autoComplete="email"
+          value={email}
+          onChange={handleControll}
+          type="text"
+          placeholder="inter your name "
+          className="w-full border border-gray-400   rounded-md outline-0 p-3 "
+          name="email"
+          id=""
+        />
+        {/* <div className='relative'>
 
     <input
     value={password}     
@@ -57,7 +83,7 @@ autoComplete='email'
  
 
     </div> */}
-    <div className="relative">
+        <div className="relative">
           <input
             name="password"
             value={password}
@@ -86,21 +112,25 @@ autoComplete='email'
           {/* <FaEyeSlash onClick={()=>setShow(!show)} className={`absolute ${!show && 'hidden'} top-1/2 right-3 -translate-y-1/2 text-gray-800`} cursor={'pointer'} size={20} /> */}
         </div>
 
+        <button
+          onClick={handleLogin}
+          className="w-full  rounded-md bg-blue-700  text-white font-bold  p-3 "
+        >
+          Log in{" "}
+        </button>
 
-<button className='w-full  rounded-md bg-blue-700  text-white font-bold  p-3 '>Log in </button>
-    
-<Link className='my-2 block text-center  text-blue-500 mb-6 '><a href="">Forgetten password </a></Link>
+        <Link className="my-2 block text-center  text-blue-500 mb-6 ">
+          <a href="">Forgetten password </a>
+        </Link>
 
-<hr  className='h-[1px] bg-gray-400 border-0 '/>
+        <hr className="h-[1px] bg-gray-400 border-0 " />
 
-<button className='bg-[#42B72A] p-3 font-semibold sm:w-full  cursor-pointer  rounded-md text-white md:w-1/2 md:whitespace-nowrap     my-5  mx-auto  block '>
-<Link to={"/register"}>
-  Create New Accout 
-</Link>
-</button>
-  </form>
-    </ >
-  )
-}
+        <button className="bg-[#42B72A] p-3 font-semibold sm:w-full  cursor-pointer  rounded-md text-white md:w-1/2 md:whitespace-nowrap     my-5  mx-auto  block ">
+          <Link to={"/register"}>Create New Accout</Link>
+        </button>
+      </form>
+    </>
+  );
+};
 
-export default LoginFrom
+export default LoginFrom;

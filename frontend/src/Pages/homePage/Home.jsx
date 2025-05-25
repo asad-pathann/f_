@@ -12,7 +12,7 @@ const Home = () => {
       </div>
       {/* main content */}
       {/* sidebar  */}
-      <div className="grid grid-cols-1 min-h-screen bg-[#F2F4F7] my-2 md:grid-cols-12  ">
+      <div className="grid grid-cols-1 min-h-screen bg-[#F2F4F7] my-1 md:grid-cols-12  ">
         <div className="md:col-span-3  lg:block hidden">
           <Sidebar />
         </div>

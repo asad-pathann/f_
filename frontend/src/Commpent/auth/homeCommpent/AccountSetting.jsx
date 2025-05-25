@@ -9,8 +9,13 @@ const AccountSetting = () => {
   const [openAccount, setopenaccount] = useState(false);
   return (
     <>
-      <div className="  p-5 rounded-md absolute top-full w-[400px] z-999 -translate-x-1/2 shadow-gray-600 shadow-lg ">
-        <div className="p-4 rounded-md shadow-lg">
+      <div
+        className="  p-5 rounded-md absolute  top-full w-[400px] z-999 bg-white -translate-x-1/2 shadow-gray-600 shadow-lg "
+        style={{
+          zIndex: 999,
+        }}
+      >
+        <div className="p-4 rounded-md shadow-xl">
           <div className="flex items-center gap-1  hover:bg-gray-200 p-2 rounded-md  ">
             <div className=" flex h-[40px] w-[40px] justify-center items-center bg-gray-200  rounded-full ">
               <FaUser size={20} />

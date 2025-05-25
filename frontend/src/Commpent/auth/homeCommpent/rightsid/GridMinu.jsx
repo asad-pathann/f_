@@ -6,27 +6,27 @@ import { create_data } from "../date/createData";
 const GridMinu = () => {
   return (
     <>
-      <div className="bg-gray-100 px-5 py-3 top-full h-[80vh] overflow-y-scroll w-max -translate-x-full absolute">
-        <h3 className="text-2xl font-bold  bg-gray-200 sticky top-0 self-start">
+      <div className="bg-gray-100 px-5 top-full h-[80vh] rounded-md overflow-y-scroll w-max -translate-x-[500px]  absolute">
+        <h3 className="text-[25px] font-bold sticky   p-2  z-999 bg-gray-100   top-0 self-start">
           Minu
         </h3>
 
-        <div className="grid  w-[600px] grid-cols-1 md:grid-cols-3  gap-4 ">
+        <div className="grid  w-[600px] grid-cols-1 md:grid-cols-3  gap-4">
           <div className="md:col-span-2  bg-white p-5">
             <div className="flex gap-1 items-center  bg-gray-300 p-2 rounded-full ">
               <IoMdSearch size={20} />
               <input
-                type="text "
+                type="text"
                 placeholder="Sreach Mibu"
                 className="outline-0 "
               />
             </div>
 
             <ol className="flex flex-col gap-2 unstyled my-4  ">
-              {gird_data?.map((item, index) => {
+              {gird_data?.slice(0, 8).map((item, index) => {
                 return (
                   <div key={index}>
-                    <li className="font-bold text-xl mb-3 capitalize text-gray-700">
+                    <li className="font-semibold text-xl mb-3 capitalize text-gray-700">
                       {item?.title}
                     </li>
 
@@ -38,7 +38,7 @@ const GridMinu = () => {
                         >
                           <img
                             src={item2.image}
-                            width={40}
+                            width={30}
                             alt=""
                             style={{
                               backgroundSize: "covers",
@@ -61,7 +61,7 @@ const GridMinu = () => {
               })}
             </ol>
           </div>
-          <div className="md:col-span-1 sticky self-start top-[34px] bg-white  p-3 ">
+          <div className="md:col-span-1 sticky top-[49px] bg-white p-3 h-fit">
             <h3>Create</h3>
             <ol className="unstyled ">
               {create_data?.map((item, index) => {
@@ -69,7 +69,7 @@ const GridMinu = () => {
                   <div key={index}>
                     <li key={index} className=" ">
                       <div className="flex gap-2 items-center">
-                        <div className="h-[40px] w-[40px] my-1    bg-gray-300 rounded-full flex items-center  justify-center ">
+                        <div className="h-[40px] w-[40px] my-1    bg-gray-200 rounded-full flex items-center  justify-center ">
                           {item?.icons}
                         </div>
                         <h5 className="text-lg text-gray-700 font-semibold capitalize">

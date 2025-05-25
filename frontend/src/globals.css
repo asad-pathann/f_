@@ -1,10 +1,9 @@
 @import "tailwindcss";
 
-.hide_scroll::-webkit-scrollbar-thumb {
-  width: 0 !important;
-  height: 0 !important;
+.hide_scroll {
+  overflow: auto; /* ya scroll, agar force scroll chahiye */
+  scrollbar-width: none; /* Firefox ke liye */
 }
-
 @media (max-width: 950px) {
   .icons_div {
     display: none;
