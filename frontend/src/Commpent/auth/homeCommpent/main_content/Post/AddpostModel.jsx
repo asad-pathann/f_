@@ -4,11 +4,14 @@ import { FaBeer, FaUserCircle, FaUserFriends } from "react-icons/fa";
 import { TiArrowSortedDown } from "react-icons/ti";
 import { BsEmojiSmile } from "react-icons/bs";
 import { RiArrowLeftSLine } from "react-icons/ri";
+import { GoArrowLeft } from "react-icons/go";
 
 import { colors } from "@mui/material";
-import { Colors_data } from "../../date/color_data";
 import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
+import { Colors_data } from "./data/color_data";
+import { colors_image } from "./data/GridColor";
+import BackgroundThem from "./BackgroundThem";
 
 export default function BasicModal() {
   const [open, setOpen] = React.useState(false);
@@ -34,6 +37,7 @@ export default function BasicModal() {
   const [change, setchange] = React.useState(false);
 
   const [show, setshow] = React.useState(false);
+  const [showBg, setshowBg] = React.useState(false);
   const { startColor, endColor } = selectColor;
 
   React.useEffect(() => {
@@ -70,12 +74,12 @@ export default function BasicModal() {
           className={`flex  items-center justify-center h-screen `}
         >
           <div
-            onClick={(e) => e.stopPropagation(handleCLose)}
+            onClick={(e) => e.stopPropagation(handleCLose) && setshowBg(false)}
             className="bg-white relative rounded-xl shadow-xl w-[90%] md:w-[60%] xl:w-[35%]"
           >
             {/* cros  div X  */}
             <div
-              onClick={handleClose}
+              onClick={handleClose || setshowBg(false)}
               className="flex justify-center items-center p-3  h-[30px] w-[30px] bg-gray-200 rounded-full absolute top-[20px] right-[10px]"
             >
               <h3 className="font-bold text-1xl">X</h3>
@@ -104,11 +108,11 @@ export default function BasicModal() {
               name=""
               style={{
                 background:
-                  startColor == ""
-                    ? `url${selectColor?.image}`
+                  startColor === ""
+                    ? `url(${selectColor?.image})`
                     : `linear-gradient(${startColor},${endColor})`,
                 backgroundPosition: "center center",
-                backgroundSize: "cover",
+                backgroundSize: "100% 100%",
               }}
               placeholder={`Whats youe ${user?.f_name} `}
               className={`w-full text-xl my-3 h-[200px] text-black ${
@@ -118,7 +122,7 @@ export default function BasicModal() {
               id=""
             >
               <p className={`absolute h-[full] ${show ? "block" : "hidden"}`}>
-                what your mind ? user Nmae
+                what your mind ? user Name
               </p>
               <input
                 onChange={(e) => setcpation(e.target.value)}
@@ -139,29 +143,31 @@ export default function BasicModal() {
                 <>
                   <div
                     onClick={() => setopenColor(false)} // ← Correct toggle
-                    className="h-[30px] w-[30px] rounded-md bg-gray-500 flex items-center justify-center p-1 cursor-pointer"
+                    className="h-[30px] w-[30px] rounded-md bg-gray-400 flex items-center justify-center p-1 cursor-pointer"
                   >
                     <RiArrowLeftSLine size={25} />
                   </div>
                   {Colors_data?.map((item, index) => {
+                    console.log(item);
                     return (
                       <motion.div
                         key={index} // Added key prop
                         onClick={() => {
-                          console.log(index === 8);
-                          setselectColor(
-                            index === 8
-                              ? {
-                                  startColor: "",
-                                  endColor: "",
-                                  image: item?.image,
-                                }
-                              : {
-                                  startColor: item?.startColor,
-                                  endColor: item?.endColor,
-                                  image: "", // reset image if it's not the image option
-                                }
-                          );
+                          index === 9
+                            ? setshowBg(true)`block`
+                            : setselectColor(
+                                index === 8
+                                  ? {
+                                      startColor: "",
+                                      endColor: "",
+                                      image: item?.image,
+                                    }
+                                  : {
+                                      startColor: item?.startColor,
+                                      endColor: item?.endColor,
+                                      image: "", // reset image if it's not the image option
+                                    }
+                              );
 
                           setchange(index == 0 ? false : true);
                         }}
@@ -171,11 +177,12 @@ export default function BasicModal() {
                         className={`h-[30px] w-[30px] shadow-gray-300 shadow rounded-md  `}
                         style={{
                           background:
-                            index == 8
+                            index == 8 || index === 9
                               ? `url(${item?.image})`
                               : `linear-gradient(to right,${item?.startColor}, ${item?.endColor})`,
                           backgroundPosition: "center center",
-                          backgroundSize: "cover",
+                          backgroundSize: "100% 100%",
+                          backgroundRepeat: "no-repeat",
                         }}
                       ></motion.div>
                     );
@@ -199,6 +206,13 @@ export default function BasicModal() {
 
             {/* Modal content yahan likho */}
           </div>
+
+          <BackgroundThem
+            showBg={showBg}
+            selectColor={selectColor}
+            setselectColor={setselectColor}
+            setshowBg={setshowBg}
+          />
         </div>
       </Modal>
     </div>

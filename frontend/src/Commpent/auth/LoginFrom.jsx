@@ -5,6 +5,7 @@ import { IoEye } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { reg_login, userReset } from "../../feature/User/UserSlice";
 import toast from "react-hot-toast";
+import CircleLoader from "./../../../node_modules/react-spinners/esm/CircleLoader";
 
 const LoginFrom = () => {
   const [controll, setcontroll] = useState({
@@ -114,9 +115,13 @@ const LoginFrom = () => {
 
         <button
           onClick={handleLogin}
-          className="w-full  rounded-md bg-blue-700  text-white font-bold  p-3 "
+          className={`w-full  rounded-md  font-bold  p-3 ${
+            userLoading
+              ? "bg-gray-500 text-white font-semibold"
+              : "bg-blue-700  text-white"
+          }`}
         >
-          Log in{" "}
+          {userLoading ? <CircleLoader size={20} color="white" /> : "Login "}
         </button>
 
         <Link className="my-2 block text-center  text-blue-500 mb-6 ">

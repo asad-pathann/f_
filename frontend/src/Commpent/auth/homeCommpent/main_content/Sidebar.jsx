@@ -54,7 +54,7 @@ const Sidebar = () => {
                 key={index}
                 className="hover:bg-white p-2  rounded-md cursor-pointer flex items-center gap-2"
               >
-                <img src={item?.image} alt="" />
+                <img src={item?.image} alt="" width={35} />
                 <h3 className="text-lg font-semibold">{item?.heading}</h3>
               </motion.li>
             );

@@ -4,6 +4,7 @@ import { AiFillSetting } from "react-icons/ai";
 import { RiArrowRightWideFill, RiFileWarningFill } from "react-icons/ri";
 import { BsFillMoonFill, BsQuestionCircleFill } from "react-icons/bs";
 import { HiOutlineLogout } from "react-icons/hi";
+import { Link } from "@mui/material";
 
 const AccountSetting = () => {
   const [openAccount, setopenaccount] = useState(false);
@@ -83,7 +84,11 @@ const AccountSetting = () => {
           <div className="flex h-[30px] w-[30px] bg-gray-300 items-center justify-center  rounded-full ">
             <HiOutlineLogout />
           </div>
-          <h4 className="font-semibold ">Log Out</h4>
+          <Link to={"/"}>
+            <h4 className="font-semibold ">
+              <span className="text-black ">Log Out</span>
+            </h4>
+          </Link>
         </div>
       </div>
     </>

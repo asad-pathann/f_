@@ -5,6 +5,7 @@ import { AiFillQuestionCircle } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { reg_Slice, userReset } from "../../feature/User/UserSlice";
 import toast from "./../../../../node_modules/react-hot-toast/src/index";
+import CircleLoader from "react-spinners/esm/CircleLoader";
 
 const RegiterFrom = () => {
   const [controll, setcontroll] = useState({
@@ -106,7 +107,7 @@ const RegiterFrom = () => {
     }
     if (userSuccess) {
       navagite("/home");
-      toast.success("successfuly ! ");
+      toast.success("successfuly !");
     }
     dispatch(userReset());
   }, [userError, userSuccess]);
@@ -336,9 +337,13 @@ const RegiterFrom = () => {
 
         <button
           onClick={handleSign}
-          className="p-2 rounded-md text-white  font-bold bg-[#00A400] w-1/2 mx-auto block"
+          className={`p-2 rounded-md w-1/2 mx-auto block flex items-center justify-center  ${
+            userLoading
+              ? "bg-gray-500  text-white font-bold"
+              : " text-white  font-bold bg-[#00A400]"
+          }`}
         >
-          sign up
+          {userLoading ? <CircleLoader size={20} color="white" /> : "Sign Up"}
         </button>
         <Link to={"/"}>
           <a className="text-blue-600 text-center block my-3 " href="/">
