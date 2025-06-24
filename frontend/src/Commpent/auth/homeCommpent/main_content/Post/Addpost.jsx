@@ -26,7 +26,7 @@ const Addpost = () => {
             <AddpostModel />
           </div>
         </div>
-        <hr className="h-[1px] border-0 bg-gray-300 my-4 " />
+        <hr className="h-[1px] border-0 bg-gray-300 my-2 " />
 
         <div className="flex justify-between w-[95%] mx-auto   items-center ">
           <div className="flex hover:bg-gray-100 p-2 rounded-md  justify-center gap-1 items-center">

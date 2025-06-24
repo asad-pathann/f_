@@ -16,6 +16,10 @@ export const navdata = [
     title: "group",
     icons: <FaUserFriends size={25} />,
     Link: "/group",
+
+
+    
+
   },
   {
     id: 1,

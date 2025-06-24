@@ -2,7 +2,7 @@ import React from "react";
 import { GoArrowLeft } from "react-icons/go";
 import colors_image from "./data/GridColor";
 
-const BackgroundThem = ({ showBg, setshowBg, setselectColor }) => {
+const BackgroundThem = ({ showBg, setshowBg, chnage, setselectColor }) => {
   return (
     <>
       <div
@@ -11,7 +11,7 @@ const BackgroundThem = ({ showBg, setshowBg, setselectColor }) => {
           showBg
             ? "translate-x-0 block transition-all duration-150"
             : "translate-x-full hidden"
-        } p-3 h-[90vh] hide_scroll overflow-y-scroll transition-all duration-150  shadow-xl w-[90%] md:w-[60%] xl:w-[35%] `}
+        } p-3 h-[80vh] hide_scroll overflow-y-scroll transition-all duration-150  shadow-xl w-[90%] md:w-[60%] xl:w-[35%] `}
       >
         <div
           onClick={() => setshowBg(false)}
@@ -34,26 +34,34 @@ const BackgroundThem = ({ showBg, setshowBg, setselectColor }) => {
                 {item?.title}
               </h4>
 
-              <div className="grid lg:grid-cols-5 gap-4 rounded-md md:grid-cols-3  ">
+              <div className="grid grid-cols-3 lg:grid-cols-5 gap-4 rounded-md md:grid-cols-3  ">
                 {item?.list.map((item2, index2) => {
                   return (
                     <div
                       onClick={() => {
-                        setselectColor({
-                          startColor: item2?.startColor,
-                          endColor: item2?.endColor,
-                          image: item2?.image,
-                        });
+                        index == 2
+                          ? setselectColor({
+                              startColor: item2,
+                              endColor: item2,
+                              image: "",
+                            })
+                          : setselectColor({
+                              startColor: "",
+                              endColor: "",
+                              image: item2?.image,
+                            });
+
                         setshowBg(false);
                       }}
-                      className="h-[80px] cursor-pointer w-full rounded-md"
+                      className="h-[80px] bg_div cursor-pointer w-full rounded-md"
                       style={{
                         background:
                           index === 2
                             ? `linear-gradient(${item2})`
                             : `url(${item2?.image})`,
                         backgroundPosition: "center center",
-                        backgroundSize: "100% 100%",
+                        backgroundSize: "cover",
+                        backgroundRepeat: "no-repeat",
                       }}
                     ></div>
                   );

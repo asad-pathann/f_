@@ -8,10 +8,17 @@ import { GoArrowLeft } from "react-icons/go";
 
 import { colors } from "@mui/material";
 import { motion } from "framer-motion";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Colors_data } from "./data/color_data";
 import { colors_image } from "./data/GridColor";
 import BackgroundThem from "./BackgroundThem";
+import HashLoader from "react-spinners/esm/HashLoader";
+import {
+  addPostData,
+  postReset,
+} from "./../../../../../feature/User/post/postSLice";
+import { useEffect } from "react";
+import toast from "react-hot-toast";
 
 export default function BasicModal() {
   const [open, setOpen] = React.useState(false);
@@ -49,14 +56,41 @@ export default function BasicModal() {
     }
   });
 
+  const dispactch = useDispatch();
+
   const { user } = useSelector((state) => state.auth);
+  const { posts, postLoading, postError, postMessage, postSuccess } =
+    useSelector((state) => state.album);
+
+  const handleClick = () => {
+    const postData = {
+      caption,
+      background: selectColor,
+      user_id: user?._id,
+    };
+    dispactch(addPostData(postData));
+  };
+  useEffect(() => {
+    if (postError) {
+      toast.error(postMessage);
+    }
+    if (postSuccess) {
+      toast.success("Posts Successfuly ! ");
+      setcpation("");
+      // setselectColor("");
+      setchange(false);
+      handleCLose();
+      setselectColor("");
+    }
+    dispactch(postReset());
+  }, [postSuccess, postError]);
   return (
     <div>
       <div
         onClick={handleOpen}
         className="bg-gray-200 p-[7px] flex items-center rounded-full w-full cursor-pointer"
       >
-        <h3 className="font-semibold w-full  capitalize text-gray-500">
+        <h3 className="font-semibold w-full pointer-events-none  capitalize text-gray-500">
           What's your name {user?.f_name}?
         </h3>
       </div>
@@ -70,7 +104,14 @@ export default function BasicModal() {
       >
         {/* Backdrop ke andar content center karna */}
         <div
-          onClick={handleCLose}
+          onClick={() => {
+            if (handleCLose) {
+              handleCLose();
+            }
+            setselectColor("");
+            // setshow(false);
+            setchange(false);
+          }}
           className={`flex  items-center justify-center h-screen `}
         >
           <div
@@ -82,7 +123,7 @@ export default function BasicModal() {
               onClick={handleClose || setshowBg(false)}
               className="flex justify-center items-center p-3  h-[30px] w-[30px] bg-gray-200 rounded-full absolute top-[20px] right-[10px]"
             >
-              <h3 className="font-bold text-1xl">X</h3>
+              <h3 className="font-semibold text-1xl">X</h3>
             </div>
             <h3 className="text-center p-3  text-[20px] font-bold mb-2 ">
               Create Post
@@ -115,13 +156,13 @@ export default function BasicModal() {
                 backgroundSize: "100% 100%",
               }}
               placeholder={`Whats youe ${user?.f_name} `}
-              className={`w-full text-xl my-3 h-[200px] text-black ${
+              className={`w-full text-xl my-3 h-[150px] text-black ${
                 change &&
                 "h-[350px] text-white flex items-center justify-center"
-              }  cap outline-0 relative  resize-none transition-all duration-150`}
+              }  cap outline-0 relative p-2 resize-none transition-all duration-150`}
               id=""
             >
-              <p className={`absolute h-[full] ${show ? "block" : "hidden"}`}>
+              <p className={`absolute h-[full]  ${show ? "block" : "hidden"}`}>
                 what your mind ? user Name
               </p>
               <input
@@ -131,7 +172,7 @@ export default function BasicModal() {
                 className={`${
                   change
                     ? "w-full font-semibold  text-center h-full"
-                    : "h-[50px]"
+                    : "h-[40px] w-full"
                 } mb-2 outline-0 resize-none `}
                 name=""
                 id=""
@@ -203,6 +244,22 @@ export default function BasicModal() {
 
               <BsEmojiSmile size={"25px"} />
             </div>
+            <div className="p-2 ">
+              <button
+                onClick={handleClick}
+                disabled={show}
+                style={{
+                  background: show ? "gray" : "",
+                }}
+                className="p-2 rounded-md w-full cursor-pointer my-3 text-white font-bold bg-[#0866FF] "
+              >
+                {postLoading ? (
+                  <HashLoader size={"25px"} color="white" />
+                ) : (
+                  "Post"
+                )}
+              </button>
+            </div>
 
             {/* Modal content yahan likho */}
           </div>
@@ -212,6 +269,7 @@ export default function BasicModal() {
             selectColor={selectColor}
             setselectColor={setselectColor}
             setshowBg={setshowBg}
+            change={change}
           />
         </div>
       </Modal>

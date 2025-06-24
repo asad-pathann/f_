@@ -1,11 +1,30 @@
 import mongoose from "mongoose";
 
-const PostSchema = mongoose.Schema({
-  Comment: {
-    type: Array,
-    default: [],
-    required: false,
+const PostSechema = mongoose.Schema(
+  {
+    caption: {
+      type: String,
+      required: false,
+    },
+    bcakground: {
+      startColor: {
+        type: String,
+        default: "#fff",
+      },
+      endColor: {
+        type: String,
+        default: "#fff",
+      },
+      image: {
+        type: String,
+        default: "",
+      },
+    },
+    user_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
   },
-});
-
-export const Posts = mongoose.model("Posts", PostSchema);
+  { timestamp: true }
+);
+export const Post = mongoose.model("Post", PostSechema);

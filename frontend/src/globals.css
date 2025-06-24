@@ -4,10 +4,10 @@
   overflow: auto; /* ya scroll, agar force scroll chahiye */
   scrollbar-width: none; /* Firefox ke liye */
 }
-.bg-them {
+.bg_div {
   background-position: center center !important;
   background-repeat: no-repeat !important;
-  background-size: 100% 100% !important;
+  background-size: cover !important;
 }
 @media (max-width: 950px) {
   .icons_div {
