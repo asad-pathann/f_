@@ -15,10 +15,10 @@ const MainContent = () => {
   }, []);
   return (
     <>
-      <div className="h-[50%] overflow-y-scroll   my-3">
+      <div className="h-[95vh] overflow-y-scroll   my-3">
         <Addpost />
         <div className=" my-4  xl:w-[75%] mx-auto lg:w-[80%] md:w-[90%] w-[95%] ">
-          <ReelDiv />
+        <ReelDiv />
         </div>
         {posts?.map((item, index) => {
           return <GetpostData key={index} {...item} />;

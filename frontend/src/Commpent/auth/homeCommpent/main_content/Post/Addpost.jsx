@@ -17,7 +17,7 @@ const Addpost = () => {
       >
         <div className="flex items-center gap-3   w-full rounded-md ">
           <img
-            src="https://scontent.fisb5-1.fna.fbcdn.net/v/t1.30497-1/453178253_471506465671661_2781666950760530985_n.png?stp=cp0_dst-png_s40x40&_nc_cat=1&ccb=1-7&_nc_sid=136b72&_nc_ohc=31SphODCOLIQ7kNvwEuXK4q&_nc_oc=AdneZHb94KXjCY1CwAIkU1FGV0f8__hVEOpavCEJhcDxnHc76fMH1uvXheNKNJD15HE&_nc_zt=24&_nc_ht=scontent.fisb5-1.fna&oh=00_AfJji0D_2YPM7yVYWiIX33mZ83PnAGvOjyAOzSjNZWxX1w&oe=684A253A"
+            src="https://scontent.fisb2-1.fna.fbcdn.net/v/t1.30497-1/453178253_471506465671661_2781666950760530985_n.png?stp=cp0_dst-png_s40x40&_nc_cat=1&ccb=1-7&_nc_sid=136b72&_nc_eui2=AeE4k3L8ZsghWzF33Sdp_WdiWt9TLzuBU1Ba31MvO4FTUP4kRzna6o-EsUcralqwFHuvv98U8bd7rAJr6BktvdpR&_nc_ohc=oeYRy7vfWswQ7kNvwHDdDdS&_nc_oc=AdlUIlO1wo-mysMA0eU77beCZ6zwK0ILtt645pZPxPpdhDI_J3Mf1ciVbgR70EZg-a8&_nc_zt=24&_nc_ht=scontent.fisb2-1.fna&oh=00_AfMWkXP86Oia5a_eI07AGsYYinmwn-Q-i2VrngdgsPjpfw&oe=68799B3A"
             width={40}
             className="rounded-full"
             alt=""

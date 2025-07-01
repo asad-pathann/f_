@@ -5,8 +5,9 @@ import { CiGlobe } from "react-icons/ci";
 import { SlLike } from "react-icons/sl";
 import { PiShareFatThin } from "react-icons/pi";
 import { FaRegComment } from "react-icons/fa";
+import moment from "moment";
 
-const GetpostData = ({ bcakground, caption, _id, user_id }) => {
+const GetpostData = ({ background, caption, _id, user_id, createAt }) => {
   return (
     <>
       <div className="bg-white shadow-xl my-4 rounded-md xl:w-[75%] mx-auto lg:w-[80%] md:w-[90%] w-[95%] ">
@@ -22,7 +23,11 @@ const GetpostData = ({ bcakground, caption, _id, user_id }) => {
                 username
               </h2>
               <div className="flex gap-[4px] items-center ">
-                <p className="text-sm text-gray-500">6d</p>
+                <p className="text-sm text-gray-500">
+                  {moment().diff(moment(createAt), "hours") < 10
+                    ? moment(createAt).fromNow()
+                    : moment(createAt).format("MMMM D, YYYY")}
+                </p>
                 <p className="text-sm text-gray-500">.</p>
                 <CiGlobe className="text-sm text-gray-500" />
               </div>
@@ -34,21 +39,43 @@ const GetpostData = ({ bcakground, caption, _id, user_id }) => {
             <IoCloseSharp size={25} className="text-gray-600" />
           </div>
         </div>
-        <p className="">{caption} </p>
+        <p
+          className={`${
+            background?.startColor == "#ffffff"
+              ? "text-black text-2xl font-semibold first-letter:uppercase ml-[2px]"
+              : "hidden"
+          }`}
+        >
+          {caption}{" "}
+        </p>
         <div
           style={{
-            background: `linear-gradient(red,yellow,green)`,
+            background: background?.image
+              ? `url(${background?.image})`
+              : `linear-gradient(${background?.startColor},${background?.endColor})`,
+            backgroundPosition: "center center",
+            backgroundRepeat: "no-repeat",
+            backgroundImage: "100% 100%",
+            backgroundSize: "100% 100%",
           }}
-          className={
-            bcakground?.startColor === "#fff" || bcakground?.image != ""
-              ? "h-0"
-              : "h-[400px]"
-          }
+          className={`   object-contain relative ${
+            background?.startColor !== "#ffffff" || background?.image !== ""
+              ? "h-[400px]"
+              : "h-0"
+          } `}
         >
-          {" "}
+          <p
+            className={`  text-3xl text-white ${
+              background?.startColor != "#ffffff" || background.image != ""
+                ? " absolute top-1/2 left-1/2 -translate-x-1/2"
+                : "hidden"
+            }`}
+          >
+            {caption}
+          </p>
         </div>
         <div className="my-2 flex items-center justify-between">
-          <h3>tramlate user</h3>
+          <h3>tranlate user</h3>
         </div>
         <hr className="h-[1px] text-gray-400 " />
         <div className="flex p-2   justify-between items-center">

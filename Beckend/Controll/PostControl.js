@@ -29,3 +29,8 @@ export const getPost = async (req, res) => {
   const getAll = await Post.find();
   res.send(getAll);
 };
+
+export const getdata = async (req, res) => {
+  const getdataAll = await Post.find().sort({ create: -1 });
+  res.send(getdataAll);
+};

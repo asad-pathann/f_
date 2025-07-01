@@ -41,7 +41,7 @@ const Sidebar = () => {
               },
             },
           }}
-          className="flex flex-col gap-2 p-2 overflow-y-scroll hide_scroll h-[98vh] hide_scroll unstyled my-1 "
+          className="flex flex-col gap-2 p-2 overflow-y-scroll hide_scroll h-[80vh] hide_scroll unstyled my-1 "
         >
           {sidebra?.slice(0, open ? sidebra?.length : 8).map((item, index) => {
             return (

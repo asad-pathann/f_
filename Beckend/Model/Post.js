@@ -6,14 +6,14 @@ const PostSechema = mongoose.Schema(
       type: String,
       required: false,
     },
-    bcakground: {
+    background: {
       startColor: {
         type: String,
-        default: "#fff",
+        default: "#ffffff",
       },
       endColor: {
         type: String,
-        default: "#fff",
+        default: "#ffffff",
       },
       image: {
         type: String,
