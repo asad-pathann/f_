@@ -20,6 +20,16 @@ const PostSechema = mongoose.Schema(
         default: "",
       },
     },
+    PostImage: {
+      type: String,
+      default: "",
+      required: false,
+    },
+    likes: {
+      type: [{ type: "", id: mongoose.Schema.Types.ObjectId }],
+      default: [],
+      required: false,
+    },
     user_id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

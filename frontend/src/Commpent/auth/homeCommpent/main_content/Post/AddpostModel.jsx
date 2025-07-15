@@ -62,6 +62,8 @@ export default function BasicModal() {
   const [mediaSelect, setmediaSelect] = React.useState(true);
   const [imagePriveiw, setimageprivew] = React.useState(false);
   const [image, setimage] = React.useState("");
+  const [imageLoading, setimageloading] = React.useState(false);
+  const [imageLink, setimageLink] = React.useState(false);
 
   React.useEffect(() => {
     // caption.length > 0  setshow(false) : setshow(true)
@@ -81,15 +83,17 @@ export default function BasicModal() {
   const { posts, postLoading, postError, postMessage, postSuccess } =
     useSelector((state) => state.album);
 
-  const handleClick = () => {
+  const handleClick = async () => {
+    // await uploadImage();
     const postData = {
       caption,
       background: selectColor,
       user_id: user?._id,
+      image: await uploadImage(),
     };
+    dispactch(addPostData(postData));
     // dispactch(addPostData(postData));
     // handleCloudinary();
-    uploadImage();
   };
   useEffect(() => {
     if (postError) {
@@ -115,18 +119,31 @@ export default function BasicModal() {
   };
 
   const uploadImage = async () => {
-    let data = new FormData();
-    // usrbae :
-    // drunmyuiq?
+    try {
+      setimageloading(true);
+      let data = new FormData();
+      // usrbae : //asadullah
+      // drunmyuiq?
 
-    data.append("file", image);
-    data.append("upload_preset", "asadullah");
+      data.append("file", image);
+      data.append("upload_preset", "asadullah");
 
-    const reponse = await axios.post(
-      "https://api.cloudinary.com/v1_1/drunmyuiq/image/upload",
-      data
-    );
-    console.log(reponse.data.url);
+      const reponse = await axios.post(
+        "https://api.cloudinary.com/v1_1/drunmyuiq/image/upload",
+        data
+      );
+      console.log(reponse.data.url);
+      setimageLink(reponse.data.url);
+      setmedia(false);
+      // setimageprivew(false);
+      return reponse.data.url;
+
+      toast.success("image uploaded ! ");
+    } catch (error) {
+      console.log(error);
+      setimageloading(true);
+    }
+    setimageloading(false);
   };
 
   return (
@@ -164,10 +181,23 @@ export default function BasicModal() {
             className="bg-white relative rounded-xl shadow-xl w-[90%] md:w-[60%] xl:w-[35%]"
           >
             {/* cros  div X  */}
-            <div className="overflow-y-scroll hide_scroll h-[450px]">
+            <div
+              className={`overflow-y-scroll hide_scroll transition-all duration-150  ${
+                change ? "h-[600px]" : "h-[500px]"
+              }`}
+            >
               <div
-                onClick={handleClose || setshowBg(false)}
-                className="flex justify-center items-center p-3  h-[30px] w-[30px] bg-gray-200 rounded-full absolute top-[20px] right-[10px]"
+                onClick={() => {
+                  handleClose || setshowBg(false), setmedia(false);
+                  setmediaSelect(false);
+                  setimage("");
+                  setshowBg(false);
+                  setselectColor("");
+                  setchange(false);
+                  setcpation("");
+                  handleCLose();
+                }}
+                className="flex justify-center items-center p-3 cursor-pointer  h-[30px] w-[30px] bg-gray-200 rounded-full absolute top-[20px] right-[10px]"
               >
                 <h3 className="font-semibold text-1xl">X</h3>
               </div>
@@ -377,11 +407,12 @@ export default function BasicModal() {
                   onClick={handleClick}
                   disabled={show}
                   style={{
-                    background: show ? "gray" : "",
+                    background:
+                      show || imageLoading || postLoading ? "gray" : "",
                   }}
                   className="p-2 rounded-md w-full cursor-pointer my-3 text-white font-bold bg-[#0866FF] "
                 >
-                  {postLoading ? (
+                  {postLoading || imageLoading ? (
                     <HashLoader size={"25px"} color="white" />
                   ) : (
                     "Post"

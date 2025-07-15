@@ -6,8 +6,16 @@ import { SlLike } from "react-icons/sl";
 import { PiShareFatThin } from "react-icons/pi";
 import { FaRegComment } from "react-icons/fa";
 import moment from "moment";
+import EmojiSection from "./emoji/EmojiSection";
 
-const GetpostData = ({ background, caption, _id, user_id, createAt }) => {
+const GetpostData = ({
+  background,
+  caption,
+  _id,
+  user_id,
+  createAt,
+  PostImage,
+}) => {
   return (
     <>
       <div className="bg-white shadow-xl my-4 rounded-md xl:w-[75%] mx-auto lg:w-[80%] md:w-[90%] w-[95%] ">
@@ -24,9 +32,8 @@ const GetpostData = ({ background, caption, _id, user_id, createAt }) => {
               </h2>
               <div className="flex gap-[4px] items-center ">
                 <p className="text-sm text-gray-500">
-                  {moment().diff(moment(createAt), "hours") < 10
-                    ? moment(createAt).fromNow()
-                    : moment(createAt).format("MMMM D, YYYY")}
+                  {moment(createAt).format("DD MMM YYYY")}{" "}
+                  {/* Example: "09 Jul 2025" */}
                 </p>
                 <p className="text-sm text-gray-500">.</p>
                 <CiGlobe className="text-sm text-gray-500" />
@@ -50,13 +57,14 @@ const GetpostData = ({ background, caption, _id, user_id, createAt }) => {
         </p>
         <div
           style={{
-            background: background?.image
-              ? `url(${background?.image})`
-              : `linear-gradient(${background?.startColor},${background?.endColor})`,
+            background: postImage
+              ? `url(${postImage})`
+              : background.image
+              ? `url(${background.image})`
+              : `linear-gradient(${background.startColor},${background.endColor})`,
             backgroundPosition: "center center",
             backgroundRepeat: "no-repeat",
-            backgroundImage: "100% 100%",
-            backgroundSize: "100% 100%",
+            backgroundSize: "cover", // or "100% 100%"
           }}
           className={`   object-contain relative ${
             background?.startColor !== "#ffffff" || background?.image !== ""
@@ -80,8 +88,9 @@ const GetpostData = ({ background, caption, _id, user_id, createAt }) => {
         <hr className="h-[1px] text-gray-400 " />
         <div className="flex p-2   justify-between items-center">
           <div className="flex gap-2 items-center">
-            <SlLike size={20} />
-            <h4 className="font-semibold text-gray-600">Like</h4>
+            {/* <SlLike size={20} /> */}
+            <EmojiSection />
+            {/* <h4 className="font-semibold text-gray-600">Like</h4> */}
           </div>
           <div className="flex gap-2 items-center">
             <FaRegComment size={20} />
