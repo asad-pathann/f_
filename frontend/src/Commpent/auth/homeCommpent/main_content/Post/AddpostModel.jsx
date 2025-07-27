@@ -77,9 +77,10 @@ export default function BasicModal() {
   }, [caption, mediaSelect]);
 
   const dispactch = useDispatch();
-  console.log(selectColor);
+  // console.log(selectColor);
 
   const { user } = useSelector((state) => state.auth);
+
   const { posts, postLoading, postError, postMessage, postSuccess } =
     useSelector((state) => state.album);
 

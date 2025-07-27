@@ -114,3 +114,79 @@ export const sidebra = [
     heading: "whataApp",
   },
 ];
+
+// {(() => {
+//               const seen = new Set();
+//               return like.map((item) => {
+//                 if (seen.has(item?.type)) return null;
+//                 seen.add(item?.type);
+
+//                 // Show icons based on type
+//                 switch (item?.type) {
+//                   case "wow":
+//                     return (
+//                       <picture>
+//                         <source
+//                           srcSet="https://fonts.gstatic.com/s/e/notoemoji/latest/1f631/512.webp"
+//                           type="image/webp"
+//                         />
+//                         <img
+//                           src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f631/512.gif"
+//                           alt="😱"
+//                           width="32"
+//                           height="32"
+//                         />
+//                       </picture>
+//                     );
+//                   case "haha":
+//                     return "😂";
+//                   case "like":
+//                     return (
+//                       <picture>
+//                         <source
+//                           srcSet="https://fonts.gstatic.com/s/e/notoemoji/latest/1f44d/512.webp"
+//                           type="image/webp"
+//                         />
+//                         <img
+//                           src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f44d/512.gif"
+//                           alt="👍"
+//                           width="30"
+//                           height="30"
+//                         />
+//                       </picture>
+//                     );
+//                   case "engry":
+//                     return (
+//                       <picture>
+//                         <source
+//                           srcSet="https://fonts.gstatic.com/s/e/notoemoji/latest/1f620/512.webp"
+//                           type="image/webp"
+//                         />
+//                         <img
+//                           src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f620/512.gif"
+//                           alt="😠"
+//                           width="32"
+//                           height="32"
+//                         />
+//                       </picture>
+//                     );
+//                   case "love":
+//                     return (
+//                       <picture>
+//                         <source
+//                           srcSet="https://fonts.gstatic.com/s/e/notoemoji/latest/2764_fe0f/512.webp"
+//                           type="image/webp"
+//                         />
+//                         <img
+//                           src="https://fonts.gstatic.com/s/e/notoemoji/latest/2764_fe0f/512.gif"
+//                           alt="❤"
+//                           width="32"
+//                           height="32"
+//                         />
+//                       </picture>
+//                     );
+//                   default:
+//                     return null;
+//                 }
+//               });
+//             })()}

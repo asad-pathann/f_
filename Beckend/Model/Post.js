@@ -20,13 +20,13 @@ const PostSechema = mongoose.Schema(
         default: "",
       },
     },
-    PostImage: {
+    postImage: {
       type: String,
       default: "",
       required: false,
     },
     likes: {
-      type: [{ type: "", id: mongoose.Schema.Types.ObjectId }],
+      type: Array,
       default: [],
       required: false,
     },
