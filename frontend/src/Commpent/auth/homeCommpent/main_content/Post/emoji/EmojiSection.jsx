@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ReactData } from "../../../../../../feature/User/post/postSLice";
 import { FaRegThumbsUp } from "react-icons/fa";
-import { GoThumbsup } from "react-icons/go";
+import { BsHandThumbsUp } from "react-icons/bs";
 
 const emojis = [
   { name: "like", icon: "👍", bgColor: "bg-blue-100", color: "text-blue-400" },
@@ -37,8 +37,11 @@ const EmojiSection = ({ post_id, like }) => {
   const [showEmojis, setShowEmojis] = useState(false);
   const [selectedEmoji, setSelectedEmoji] = useState(null);
   const dispatch = useDispatch();
+
   const [select, setselect] = useState(null);
+
   const user = useSelector((state) => state.auth);
+
   const handleEmojiClick = (emoji) => {
     setSelectedEmoji(emoji);
     setShowEmojis(false);
@@ -64,17 +67,19 @@ const EmojiSection = ({ post_id, like }) => {
       <button
         onMouseEnter={() => setShowEmojis(true)}
         onMouseLeave={() => setTimeout(() => setShowEmojis(false), 3000)} // Small delay to allow clicking
-        className="px-4 py-2 bg-gray-100 rounded-full hover:bg-gray-200 transition flex items-center gap-1"
+        className="px-4 py-2  **: rounded-full hover:bg-gray-200 transition flex items-center gap-1"
       >
         <span className="text-xl">
           {selectedEmoji ? (
             selectedEmoji.icon
           ) : (
-            <GoThumbsup className="text-gray-600 text-2xl" />
+            <>
+              <BsHandThumbsUp className="text-gray-600 text-lg" />
+            </>
           )}
         </span>
         <span
-          className={`font-semibold text-sm flex gap-1 ${
+          className={`font-semibold text-gray-700 text-sm flex gap-1 ${
             selectedEmoji ? selectedEmoji.color : ""
           }`}
         >

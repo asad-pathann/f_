@@ -32,7 +32,20 @@ export const makeReaction = async (reactionData) => {
 //   return response.data;
 // };
 
-export const GetReact = async (post_id) => {
+export const GetReact = async (post_id, token) => {
   const response = await axios.get(`${base_url}/GetLike/${post_id}`);
+  return response.data;
+};
+export const AddComment = async (postData, token) => {
+  // const config = {
+  //   headers: {
+  //     Authorization: `Bearer ${token}`, // ✅ spelling correct
+  //   },
+  // };
+
+  const response = await axios.post(
+    `${base_url}addComment/${postData?.post_id}/${postData?.user_id}`,
+    postData
+  );
   return response.data;
 };

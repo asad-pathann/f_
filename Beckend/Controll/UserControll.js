@@ -80,6 +80,18 @@ export const Login = async (req, res) => {
 
 const generateToken = async (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: "1y",
+    expiresIn: "60d",
   });
+};
+
+export const GetallUser = async (req, res) => {
+  const alluser = await User.find();
+  res.send(alluser);
+};
+
+export const UserInfo = async (req, res) => {
+  const { user_id } = req.params;
+
+  const UserInfo = await User.findById(user_id);
+  res.send(UserInfo);
 };

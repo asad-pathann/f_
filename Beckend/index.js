@@ -20,5 +20,5 @@ app.use("/api/posts/", PostRouter);
 
 app.use(handleError);
 app.listen(process.env.PORT, () =>
-  console.log(`server is started ${process.env.PORT.rainbow}`)
+  console.log(`server is started ${process.env.PORT}`)
 );

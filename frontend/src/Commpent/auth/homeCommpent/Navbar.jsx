@@ -17,6 +17,7 @@ import { BsShop } from "react-icons/bs";
 import { navdata } from "./date/navbarData";
 import GridMinu from "./rightsid/GridMinu";
 import AccountSetting from "./AccountSetting";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [focus, setfocus] = useState(false);
@@ -75,10 +76,12 @@ const Navbar = () => {
             return (
               <li
                 key={index}
-                className="cursor-pointer text-gray-700 relative group hover:bg-gray-100 rounded-md  py-3 px-10"
+                className="cursor-pointer text-gray-700 relative group hover:bg-gray-100 rounded-md py-3 px-10"
               >
-                {item?.icons}
-                <div className="absolute top-full left-1/2  transition-all  duration-200  delay-100  -translate-x-1/2 group-hover:opacity-100 opacity-0 bg-black text-white px-3 py-1  rounded-full text-sm">
+                <Link to={item.Link} className="flex items-center gap-2">
+                  {item?.icons}
+                </Link>
+                <div className="absolute top-full left-1/2 transition-all duration-200 delay-100 -translate-x-1/2 group-hover:opacity-100 opacity-0 bg-black text-white px-3 py-1 rounded-full text-sm">
                   {item.title}
                 </div>
               </li>

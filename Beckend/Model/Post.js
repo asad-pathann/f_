@@ -25,16 +25,23 @@ const PostSechema = mongoose.Schema(
       default: "",
       required: false,
     },
+    user_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     likes: {
       type: Array,
       default: [],
       required: false,
     },
-    user_id: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+
+    comments: {
+      type: Array,
+      default: [],
+      required: false,
     },
   },
-  { timestamp: true }
+  { timestamps: true }
 );
 export const Post = mongoose.model("Post", PostSechema);

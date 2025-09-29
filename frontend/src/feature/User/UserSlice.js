@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { UserLogin, Userserives } from "./UserSerives";
+import { GetUuser, UserLogin, Userserives } from "./UserSerives";
 
 const initialState = {
   user: JSON.parse(localStorage.getItem("user")) || null,
@@ -7,6 +7,7 @@ const initialState = {
   userError: false,
   userSuccess: false,
   userMessage: "",
+  allUsers: [],
 };
 
 export const reg_Slice = createAsyncThunk(
@@ -27,6 +28,17 @@ export const reg_login = createAsyncThunk(
       return await UserLogin(userData);
     } catch (error) {
       return await thunkAPI.rejectWithValue(error.response.data.error);
+    }
+  }
+);
+
+export const GetalluserData = createAsyncThunk(
+  "/get-all-user",
+  async (_, thunkAPI) => {
+    try {
+      return await GetUuser();
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.error);
     }
   }
 );
@@ -74,6 +86,20 @@ export const userSlice = createSlice({
         state.userMessage = action.payload;
         state.userSuccess = true;
         state.user = action.payload;
+      })
+      .addCase(GetalluserData.pending, (state, action) => {
+        state.userLoading = true;
+      })
+      .addCase(GetalluserData.rejected, (state, action) => {
+        state.userLoading = false;
+        state.userError = true;
+        state.userMessage = action.payload;
+      })
+      .addCase(GetalluserData.fulfilled, (state, action) => {
+        state.userMessage = action.payload;
+        state.userSuccess = true;
+        state.userLoading = false;
+        state.allUsers = action.payload;
       });
   },
 });

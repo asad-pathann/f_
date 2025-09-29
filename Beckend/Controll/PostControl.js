@@ -14,12 +14,13 @@ export const addPost = async (req, res) => {
 };
 
 export const getPost = async (req, res) => {
-  const getAll = await Post.find();
+  const getAll = await Post.find().populate("user_id").sort({ createAt: -1 });
   res.send(getAll);
 };
 
 export const getdata = async (req, res) => {
-  const getdataAll = await Post.find().sort({ create: -1 });
+  const getdataAll = await Post.find();
+
   res.send(getdataAll);
 };
 
@@ -73,4 +74,21 @@ export const getReact = async (req, res) => {
   } catch (error) {
     console.log(error, "try catch error");
   }
+};
+
+export const AddComment = async (req, res) => {
+  const { post_id, user_id } = req.params;
+  const { comment } = req.body;
+
+  const findPost = await Post.findById(post_id);
+  if (!findPost) {
+    res.status(404);
+    throw new Error("Post not Found !");
+  }
+
+  findPost.comments.push({ comment, post_id, user_id });
+
+  await findPost.save();
+
+  res.send(findPost);
 };

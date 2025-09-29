@@ -14,3 +14,9 @@ export const UserLogin = async (userData) => {
   const response = await axios.post(`${base_url}/login`, userData);
   return response.data;
 };
+
+export const GetUuser = async () => {
+  const response = await axios.get(`${base_url}/get-user`);
+
+  return response.data;
+};

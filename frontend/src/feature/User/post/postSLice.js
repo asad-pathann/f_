@@ -1,5 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { addPost, getllpost, GetReact, makeReaction } from "./postServes";
+import {
+  AddComment,
+  addPost,
+  getllpost,
+  GetReact,
+  makeReaction,
+} from "./postServes";
 import GetpostData from "../../../Commpent/auth/homeCommpent/main_content/Post/GetpostData";
 import { makeReact } from "../../../../../Beckend/Controll/PostControl";
 
@@ -14,6 +20,10 @@ const initialState = {
   reactMessage: "",
   reactLoading: false,
   react: [],
+  commentSucess: false,
+  commentError: false,
+  commentLoading: false,
+  comment: [],
 };
 
 export const addPostData = createAsyncThunk(
@@ -55,6 +65,17 @@ export const GetReactionData = createAsyncThunk(
     }
   }
 );
+
+export const AddCommetSlice = createAsyncThunk(
+  "addComment",
+  async (postData, thunkAPI) => {
+    try {
+      return await AddComment(postData);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.error);
+    }
+  }
+);
 export const postSlice = createSlice({
   name: "posts",
   initialState,
@@ -67,6 +88,9 @@ export const postSlice = createSlice({
       state.reactMessage = "";
       state.reactSucess = false;
       state.reactionError = false;
+      state.commentSucess = false;
+      state.commentError = false;
+      state.commentLoading = false;
     },
   },
   extraReducers: (builder) => {
@@ -108,10 +132,14 @@ export const postSlice = createSlice({
         state.reactMessage = action.payload;
       })
       .addCase(ReactData.fulfilled, (state, action) => {
-        state.reactLoading = false;
-        state.reactSucess = true;
-        state.reactMessage = action.payload;
-        state.react = action.payload;
+        state.posts = state.posts.map((item, index) => {
+          if (item?._id == action.payload.likes[0].post_id) {
+            return {
+              ...item,
+            };
+          }
+          return item;
+        });
       })
       .addCase(GetReactionData.pending, (state, acion) => {
         state.reactLoading = true;
@@ -125,6 +153,24 @@ export const postSlice = createSlice({
         state.postMessage = action.payload;
         state.reactSucess = true;
         state.react = action.payload;
+      })
+      .addCase(AddCommetSlice.pending, (state, acion) => {
+        state.commentLoading = true;
+      })
+      .addCase(AddCommetSlice.rejected, (state, action) => {
+        state.commentError = true;
+        state.postMessage = action.payload;
+      })
+      .addCase(AddCommetSlice.fulfilled, (state, action) => {
+        state.posts = state.posts.map((item, index) => {
+          if (item?._id == action.payload.comments[0].post_id) {
+            return {
+              ...item,
+              comments: action.payload.comments,
+            };
+            return item;
+          }
+        });
       });
   },
 });
