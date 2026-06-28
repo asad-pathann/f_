@@ -18,7 +18,7 @@ export const reg_Slice = createAsyncThunk(
     } catch (error) {
       return await thunkAPI.rejectWithValue(error.response.data.error);
     }
-  }
+  },
 );
 
 export const reg_login = createAsyncThunk(
@@ -29,7 +29,7 @@ export const reg_login = createAsyncThunk(
     } catch (error) {
       return await thunkAPI.rejectWithValue(error.response.data.error);
     }
-  }
+  },
 );
 
 export const GetalluserData = createAsyncThunk(
@@ -40,7 +40,7 @@ export const GetalluserData = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.error);
     }
-  }
+  },
 );
 
 export const userSlice = createSlice({
@@ -53,6 +53,15 @@ export const userSlice = createSlice({
       state.userMessage = "";
       state.userError = false;
       state.user = null;
+    },
+    UserLogOut: (state) => {
+      state.user = null;
+      state.userLoading = false;
+      state.userSuccess = false;
+      state.userError = false;
+      state.user = null;
+      state.userMessage = "";
+      localStorage.removeItem("user");
     },
   },
   extraReducers: (builder) => {
@@ -105,4 +114,6 @@ export const userSlice = createSlice({
 });
 
 export default userSlice.reducer;
+
 export const { userReset } = userSlice.actions;
+export const { UserLogOut } = userSlice.actions;

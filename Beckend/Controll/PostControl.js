@@ -40,7 +40,7 @@ export const makeReact = async (req, res) => {
 
     // Check if user already reacted with any emoji
     const existingReactionIndex = findpost.likes.findIndex(
-      (item) => item.id === user_id
+      (item) => item.id === user_id,
     );
 
     if (existingReactionIndex === -1) {

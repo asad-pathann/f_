@@ -1,18 +1,20 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 
-const SingleFriend = () => {
+const SingleFriend = ({ f_name, l_name }) => {
+  // Ab aap ko saara data mil jaye ga (e.g., userDetails.name, userDetails.email)
   return (
     <>
       <div className="bg-white sm:h-[350px] w-[100%] rounded-2xl overflow-hidden sm:shadow-sm  shadow-gray-400 sm:my-3 my-1">
         <div className="flex gap-2  sm:flex-col items-center justify-content ">
           <img
-            src="https://scontent.fisb13-1.fna.fbcdn.net/v/t39.30808-1/465969032_589120683457204_5501389201014455811_n.jpg?stp=dst-jpg_s240x240_tt6&_nc_cat=109&ccb=1-7&_nc_sid=e99d92&_nc_eui2=AeE6sWFZt_pXliXb0_XgNsPxAseeJY8o_AECx54ljyj8AThJHJ4SRLpxKRXLcccoTZ8OfUFFlpB-kNALuRg4ppDp&_nc_ohc=y9WEXEhk4ysQ7kNvwEycDrY&_nc_oc=Adk0bmdpgFt-y6HvGQdabu246ol39ATu8j4JGOb3WkuzzmxwGPMkT6KbONpo-jpOoN663QCOYKO4esSQm4MR8-lA&_nc_zt=24&_nc_ht=scontent.fisb13-1.fna&_nc_gid=hlkRzEHjd2oVfwh3Jnoefg&oh=00_AfFfD6dM3JkgiI4j-OQRIzj2iip0z7CC7jz6nhhLU7g7aA&oe=681AEA42"
+            src="https://scontent.fisb6-1.fna.fbcdn.net/v/t1.30497-1/453178253_471506465671661_2781666950760530985_n.png?stp=dst-png&cstp=mx2048x2048&ctp=s240x240&_nc_cat=1&ccb=1-7&_nc_sid=136b72&_nc_eui2=AeEo9eTlbbd5w7pFi4OzgK7NWt9TLzuBU1Ba31MvO4FTUP241f2hTaaw4n8iTkkb8jDgm9H_tW0DGe6ok2eU-0dT&_nc_ohc=COf5-xtMqFAQ7kNvwE-6S1p&_nc_oc=AdrhBhkXJTld1q0hRYHJ7TW9B5fjFa5yl0dgUiol1Menefr_UtFqkIgFsxGPOfrzLX0&_nc_zt=24&_nc_ht=scontent.fisb6-1.fna&_nc_ss=7b2a8&oh=00_Af-xDLpBPPZ-JxJlIkVNuEdZQxdrTsaw5lGDuNFvzKcAfg&oe=6A6835FA"
             className="sm:h-[200px] h-[90px] rounded-full sm:rounded-t-2xl sm:rounded-b-none  sm:w-[100%] bg-amber-200"
             alt=""
           />
           <div className="flex flex-col items gap-1">
             <p className=" font-semibold text-sm sm:text-md">
-              MUhmmad Usman PTcl
+              {f_name} {l_name}
             </p>
             <div className="flex items-center">
               <img

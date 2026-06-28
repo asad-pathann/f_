@@ -10,6 +10,8 @@ import { PostRouter } from "./Router/PostRoutes.js";
 
 dotenv.config();
 const app = express();
+// cors express nodemon dotenv mongoose colors
+
 app.use(cors());
 ConnectDB();
 app.use(express.json());
@@ -20,5 +22,5 @@ app.use("/api/posts/", PostRouter);
 
 app.use(handleError);
 app.listen(process.env.PORT, () =>
-  console.log(`server is started ${process.env.PORT}`)
+  console.log(`server is started ${process.env.PORT}`),
 );

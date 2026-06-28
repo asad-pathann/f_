@@ -4,8 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { AiFillQuestionCircle } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { reg_Slice, userReset } from "../../feature/User/UserSlice";
-import toast from "./../../../../node_modules/react-hot-toast/src/index";
-import CircleLoader from "react-spinners/esm/CircleLoader";
+import { ClipLoader, CircleLoader } from "react-spinners";
+import toast from "react-hot-toast";
 
 const RegiterFrom = () => {
   const [controll, setcontroll] = useState({
@@ -255,7 +255,7 @@ const RegiterFrom = () => {
           name="pronune"
           id=""
         >
-          <option value="" disabled selected>
+          <option value="" disabled>
             Select Your pronune
           </option>
 

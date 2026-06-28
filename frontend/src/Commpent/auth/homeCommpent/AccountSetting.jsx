@@ -5,9 +5,21 @@ import { RiArrowRightWideFill, RiFileWarningFill } from "react-icons/ri";
 import { BsFillMoonFill, BsQuestionCircleFill } from "react-icons/bs";
 import { HiOutlineLogout } from "react-icons/hi";
 import { Link } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { UserLogOut } from "../../../feature/User/UserSlice";
 
 const AccountSetting = () => {
   const [openAccount, setopenaccount] = useState(false);
+  const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogOut = () => {
+    dispatch(UserLogOut());
+    localStorage.removeItem("user");
+    navigate("/");
+  };
   return (
     <>
       <div
@@ -17,11 +29,17 @@ const AccountSetting = () => {
         }}
       >
         <div className="p-4 rounded-md shadow-xl">
-          <div className="flex items-center gap-1  hover:bg-gray-200 p-2 rounded-md  ">
-            <div className=" flex h-[40px] w-[40px] justify-center items-center bg-gray-200  rounded-full ">
+          <div className="flex items-center gap-3  hover:bg-gray-200 p-2 rounded-md  ">
+            <div className=" flex h-[50px] w-[50px] justify-center items-center bg-gray-200  rounded-full ">
               <FaUser size={20} />
             </div>
-            <div className="text-lg font-semibold text-gray-700">Username</div>
+            <div className=" text-gray-700">
+              <h3 className="text-lg font-semibold capitalize">Username</h3>
+
+              <p className="text-sm font-semibold">
+                {user?.f_name} {user?.l_name}
+              </p>
+            </div>
           </div>
           <hr className="h-[1px] my-1  bg-gray-300 border-0 " />
 
@@ -84,11 +102,11 @@ const AccountSetting = () => {
           <div className="flex h-[30px] w-[30px] bg-gray-300 items-center justify-center  rounded-full ">
             <HiOutlineLogout />
           </div>
-          <Link to={"/"}>
+          <div onClick={handleLogOut}>
             <h4 className="font-semibold ">
               <span className="text-black ">Log Out</span>
             </h4>
-          </Link>
+          </div>
         </div>
       </div>
     </>

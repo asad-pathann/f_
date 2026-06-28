@@ -35,14 +35,14 @@ const GetpostData = ({
 
   const { posts } = useSelector((state) => state.album);
 
-  const getLikes = async () => {
-    const response = await axios.get(
-      `http://localhost:5441/api/posts/GetLike/${_id}`
-    );
-    setlike(response.data);
-    console.log(response.data);
-  };
   useEffect(() => {
+    const getLikes = async () => {
+      const response = await axios.get(
+        `http://localhost:5441/api/posts/GetLike/${_id}`,
+      );
+      setlike(response.data);
+      console.log(response.data);
+    };
     getLikes();
   }, [posts]);
   // console.log(like);
@@ -92,10 +92,10 @@ const GetpostData = ({
             backgroundImage: background?.image
               ? `url(${background.image}), url(${postImage})`
               : postImage
-              ? `url(${postImage})`
-              : background?.startColor && background?.endColor
-              ? `linear-gradient(${background.startColor}, ${background.endColor})`
-              : "none",
+                ? `url(${postImage})`
+                : background?.startColor && background?.endColor
+                  ? `linear-gradient(${background.startColor}, ${background.endColor})`
+                  : "none",
             backgroundPosition: "center center",
             backgroundRepeat: "no-repeat",
             backgroundSize: background?.image ? "cover, cover" : "cover",

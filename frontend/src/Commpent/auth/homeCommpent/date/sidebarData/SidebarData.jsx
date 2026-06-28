@@ -1,4 +1,4 @@
-export const sidebra = [
+export const sidebarData = [
   {
     id: 1,
     image: "/icons/icon_img1.png",

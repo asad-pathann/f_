@@ -1,16 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { RiFileWarningFill } from "react-icons/ri";
 import { TbUserFilled } from "react-icons/tb";
 import { LuCircleUserRound } from "react-icons/lu";
 import { gird_data } from "../date/Griddata";
 import { useSelector } from "react-redux";
-import { sidebra } from "../date/sidebarData/SidebarData";
 import { animate, motion } from "framer-motion";
 import { MdKeyboardArrowUp } from "react-icons/md";
+import { sidebarData } from "./../date/sidebarData/SidebarData";
 
 const Sidebar = () => {
   const { user } = useSelector((state) => state.auth);
   const [open, setopen] = useState(false);
+
+  console.log(user);
 
   return (
     <>
@@ -43,22 +45,24 @@ const Sidebar = () => {
           }}
           className="flex flex-col gap-2 p-2 overflow-y-scroll hide_scroll h-[80vh] hide_scroll unstyled my-1 "
         >
-          {sidebra?.slice(0, open ? sidebra?.length : 8).map((item, index) => {
-            return (
-              <motion.li
-                variants={{
-                  initial: { x: 40, opacity: 0 },
+          {sidebarData
+            ?.slice(0, open ? sidebarData?.length : 9)
+            .map((item, index) => {
+              return (
+                <motion.li
+                  variants={{
+                    initial: { x: 40, opacity: 0 },
 
-                  animate: { x: 0, opacity: 1 },
-                }}
-                key={index}
-                className="hover:bg-white p-2  rounded-md cursor-pointer flex items-center gap-2"
-              >
-                <img src={item?.image} alt="" width={35} />
-                <h3 className="text-lg font-semibold">{item?.heading}</h3>
-              </motion.li>
-            );
-          })}
+                    animate: { x: 0, opacity: 1 },
+                  }}
+                  key={index}
+                  className="hover:bg-white p-2  rounded-md cursor-pointer flex items-center gap-2"
+                >
+                  <img src={item?.image} alt="" width={35} />
+                  <h3 className="text-sm font-semibold">{item?.heading}</h3>
+                </motion.li>
+              );
+            })}
           <li
             onClick={() => setopen(!open)}
             className="flex gap-2 items-center"

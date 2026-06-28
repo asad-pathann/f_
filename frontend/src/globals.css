@@ -1,5 +1,4 @@
 @import "tailwindcss";
-
 .hide_scroll {
   overflow: auto; /* ya scroll, agar force scroll chahiye */
   scrollbar-width: none; /* Firefox ke liye */

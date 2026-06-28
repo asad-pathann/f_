@@ -119,10 +119,10 @@ const Navbar = () => {
               size={22}
               className="text-black font-bold  "
             />
-
             <div className="flex items-center  justify-center font-semibold  text-white -bottom-1 -right-0 text-xs h-[15px] absolute w-[15px] rounded-full bg-gray-500">
               <MdArrowDropDown size={20} />
             </div>
+
             {openAccount && <AccountSetting />}
           </div>
         </div>

@@ -10,6 +10,7 @@ export const addPost = async (postData) => {
   return response.data;
 };
 
+
 export const getllpost = async () => {
   const response = await axios.get(`${base_url}get-data`);
   return response.data;
@@ -22,6 +23,8 @@ export const makeReaction = async (reactionData) => {
   );
   return response.data;
 };
+
+
 
 // export const Reaction = async (reactiondata) => {
 //   const response = await axios.post(

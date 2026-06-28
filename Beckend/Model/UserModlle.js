@@ -29,12 +29,16 @@ const userSchema = mongoose.Schema(
       type: String,
       required: [true, "inter the f_name"],
     },
+    otp: {
+      type: String,
+      default: null,
+    },
     gander: {
       type: String,
       required: [true, "inter the f_name"],
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export const User = mongoose.model("User", userSchema);

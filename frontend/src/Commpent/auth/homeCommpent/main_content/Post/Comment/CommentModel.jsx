@@ -19,8 +19,6 @@ import { useDispatch, useSelector } from "react-redux";
 import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
 import { deepOrange, deepPurple } from "@mui/material/colors";
-
-import toast from "react-hot-toast";
 import { AddCommetSlice } from "../../../../../../feature/User/post/postSLice";
 import { MdGifBox } from "react-icons/md";
 
@@ -91,7 +89,7 @@ export default function CommentModal({
             className={`overflow-y-scroll  ${
               background?.startColor !== "#ffffff" || background?.image
                 ? "h-[600px]"
-                : "h-[400px]"
+                : "h-[500px]"
             } hide_scroll`}
           >
             {/* Header */}
@@ -126,10 +124,10 @@ export default function CommentModal({
                 backgroundImage: background?.image
                   ? `url(${background.image}), url(${postImage})`
                   : postImage
-                  ? `url(${postImage})`
-                  : background?.startColor && background?.endColor
-                  ? `linear-gradient(${background.startColor}, ${background.endColor})`
-                  : "none",
+                    ? `url(${postImage})`
+                    : background?.startColor && background?.endColor
+                      ? `linear-gradient(${background.startColor}, ${background.endColor})`
+                      : "none",
                 backgroundPosition: "center center",
                 backgroundRepeat: "no-repeat",
                 backgroundSize: background?.image ? "cover, cover" : "cover",

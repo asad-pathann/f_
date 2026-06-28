@@ -34,7 +34,7 @@ export const addPostData = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.error);
     }
-  }
+  },
 );
 
 export const getPostAll = createAsyncThunk("get-data", async (_, thunkAPI) => {
@@ -52,7 +52,7 @@ export const ReactData = createAsyncThunk(
     } catch (error) {
       return await rejectWithValue(error.response.data.error);
     }
-  }
+  },
 );
 
 export const GetReactionData = createAsyncThunk(
@@ -63,7 +63,7 @@ export const GetReactionData = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error.response.data.error);
     }
-  }
+  },
 );
 
 export const AddCommetSlice = createAsyncThunk(
@@ -74,14 +74,14 @@ export const AddCommetSlice = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.error);
     }
-  }
+  },
 );
 export const postSlice = createSlice({
   name: "posts",
   initialState,
   reducers: {
     postReset: (state) => {
-      (state.postLoading = false), (state.postError = false);
+      ((state.postLoading = false), (state.postError = false));
       state.postSuccess = false;
       state.postMessage = "";
       state.reactLoading = false;

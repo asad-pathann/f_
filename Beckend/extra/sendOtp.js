@@ -1,0 +1,95 @@
+import nodemailer from "nodemailer";
+
+export const sendOtp = async ({ email, otp }) => {
+  // 1. Yahan async lagaya
+  try {
+    let transport = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "asadullah.theofficial@gmail.com",
+        pass: "wetlebwkvovfbynl", // Google App Password
+      },
+    });
+
+    let mailOptions = {
+      // 2. Iska naam standard mailOptions rakh diya
+      from: `"Your App Name" <asadullah.theofficial@gmail.com>`, // Is se email professionally dikhega
+      to: email,
+      subject: "OTP Verification",
+      html: `<!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8">
+        <title>Your OTP Code</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style type="text/css">
+          body { margin:0; padding:0; background:#f4f7fa; font-family: Arial, sans-serif; }
+          table { border-collapse:collapse; }
+          a { text-decoration:none; }
+          @media only screen and (max-width: 600px) {
+            .container { width:100% !important; }
+            .otp-code { font-size:48px !important; letter-spacing:6px !important; }
+            .main { padding:20px !important; }
+          }
+        </style>
+      </head>
+      <body style="background:#f4f7fa; padding:20px 0;">
+        <center>
+          <table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px; margin:0 auto;">
+            <tr>
+              <td align="center">
+                <table width="100%" class="container" bgcolor="#ffffff" style="border-radius:16px; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,0.1);">
+                  <tr>
+                    <td align="center" style="padding:40px 30px; background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                      <div style="font-size:44px;">
+                        🔐
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="main" style="padding:40px 30px; text-align:center;">
+                      <h1 style="font-size:28px; color:#1a1a1a; margin:0 0 20px 0; font-weight:600;">
+                        Your Verification Code
+                      </h1>
+                      <p style="font-size:16px; color:#555555; line-height:1.6; margin:0 0 30px 0;">
+                        Hey there! 👋<br>
+                        We received a request to verify your account.<br>
+                        Use the code below to complete your verification:
+                      </p>
+                      <div style="margin:40px 0;">
+                        <div class="otp-code" style="font-size:44px; font-weight:bold; letter-spacing:10px; color:#667eea; background:#f0f2ff; padding:20px 30px; border-radius:16px; display:inline-block; border:3px dashed #667eea;">
+                          ${otp} 
+                        </div>
+                      </div>
+                      <p style="font-size:14px; color:#888888; margin:30px 0 0 0; line-height:1.6;">
+                        <strong>This code will expire in 10 minutes.</strong><br>
+                        If you didn’t request this, just ignore this email – your account is safe.
+                      </p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding:30px; background:#f8f9ff; text-align:center; border-top:1px solid #eee;">
+                      <p style="font-size:13px; color:#999999; margin:0;">
+                        © 2026 Your Company Name<br>
+                        Need help? Reply to this email or contact support
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+                <div style="height:30px;"></div>
+              </td>
+            </tr>
+          </table>
+        </center>
+      </body>
+      </html>`,
+    };
+
+    // 3. await use karke email send karein taake background mein break na ho
+    const info = await transport.sendMail(mailOptions);
+    console.log("Successfully sent OTP to " + email);
+    return info;
+  } catch (error) {
+    console.error("Email Error inside sendOtp.js: ", error);
+  }
+};
