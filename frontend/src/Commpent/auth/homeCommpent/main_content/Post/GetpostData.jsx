@@ -51,14 +51,14 @@ const GetpostData = ({
     <>
       <div className="bg-white shadow-xl  my-4 rounded-md xl:w-[75%] mx-auto lg:w-[80%] md:w-[90%] w-[95%] ">
         <div className="flex items-center p-2   justify-between ">
-          <div className="flex items-center gap-2 ">
+          <div className="flex items-center gap-1 ">
             <img
               src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg"
               alt=""
               className="rounded-full h-[60px] w-[60px] p-1"
             />
             <div className="flex flex-col ">
-              <h2 className="text-md  font-semibold  text-gray-700">
+              <h2 className="text-md  font-semibold capitalize  text-gray-700">
                 {user_id?.f_name} {user_id?.l_name}
               </h2>
               <div className="flex gap-[4px] items-center ">

@@ -8,6 +8,8 @@ import { IoIosSettings } from "react-icons/io";
 import { BsGridFill } from "react-icons/bs";
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
+import Messages from "../chats/Messages";
+import Navbar from "./../../Commpent/auth/homeCommpent/Navbar";
 
 const Profile = () => {
   const { user } = useSelector((state) => state.auth);
@@ -32,9 +34,10 @@ const Profile = () => {
 
   return (
     <>
+      <Navbar />
       <div className="bg-white">
         {/* ================= COVER PHOTO ================= */}
-        <div className="w-[100%] xl:w-[70%] p-4 rounded-b-md mx-auto flex flex-row-reverse items-end h-[40vh] relative bg-gradient-to-t from-gray-400 to-blue-500">
+        <div className="w-[100%] xl:w-[70%] p-4 mt-7 rounded-b-md mx-auto flex flex-row-reverse items-end h-[40vh] relative bg-gradient-to-t from-gray-400 to-blue-500">
           <div className="flex gap-1 bg-gray-50 rounded-md p-2 items-center cursor-pointer shadow-md hover:bg-gray-100 transition">
             <IoCameraSharp size={20} />
             <p className="hidden lg:block font-medium text-sm">
@@ -80,6 +83,8 @@ const Profile = () => {
             <button className="bg-blue-500 hover:bg-blue-600 transition rounded-md px-4 py-2 text-white font-semibold whitespace-nowrap shadow-sm">
               + Add to story
             </button>
+
+            <Messages username={item?.f_name} />
             <button className="bg-gray-200 hover:bg-gray-300 transition rounded-md px-4 py-2 font-semibold text-gray-800 whitespace-nowrap">
               <MdEdit className="inline mr-1" /> Edit profile
             </button>
