@@ -1,33 +1,35 @@
 import mongoose from "mongoose";
+
 const userSchema = mongoose.Schema(
   {
     f_name: {
       type: String,
-      required: [true, "inter the f_name"],
+      required: [true, "Enter the first name"],
     },
     l_name: {
       type: String,
-      required: [true, "inter the f_name"],
+      required: [true, "Enter the last name"],
     },
     email: {
       type: String,
-      required: [true, "inter the f_name"],
+      required: [true, "Enter the email"],
+      unique: true, // Email unique hona chahiye hamesha
     },
     date: {
       type: Number,
-      required: [true, "inter the f_name"],
+      required: [true, "Enter the date"],
     },
     month: {
       type: String,
-      required: [true, "inter the f_name"],
+      required: [true, "Enter the month"],
     },
     year: {
       type: Number,
-      required: [true, "inter the f_name"],
+      required: [true, "Enter the year"],
     },
     password: {
       type: String,
-      required: [true, "inter the f_name"],
+      required: [true, "Enter the password"],
     },
     otp: {
       type: String,
@@ -35,7 +37,7 @@ const userSchema = mongoose.Schema(
     },
     gander: {
       type: String,
-      required: [true, "inter the f_name"],
+      required: [true, "Enter the gender"],
     },
   },
   { timestamps: true },

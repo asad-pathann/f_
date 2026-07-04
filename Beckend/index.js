@@ -19,13 +19,18 @@ const my_server = http.createServer(app);
 const io = new Server(my_server, {
   cors: {
     origin: "*",
-    // 2. FIX: "Method" ko badal kar lowercase "methods" kiya
-    methods: ["POST", "GET", "PUT", "DELETE"],
+    method: "*",
   },
 });
 
 io.on("connection", (socket) => {
-  console.log(`socket connected ${socket.id.cyan}`);
+  console.log(`server socket ${socket.id.cyan}`);
+
+  socket.on("sent_message", (data) => {
+    console.log(data);
+
+    socket.broadcast.emit("recevied_message", data);
+  });
 });
 
 app.use(cors());

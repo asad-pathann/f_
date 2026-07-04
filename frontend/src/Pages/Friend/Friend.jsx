@@ -89,8 +89,6 @@ const Friends = () => {
             {allUsers && allUsers.length > 0
               ? allUsers.map((item, index) => (
                   <div
-                    key={item._id || index}
-                    onClick={() => navigate("/profile", { state: item })}
                     className="cursor-pointer" // Is se card par pointer show hoga jo UX ke liye zarori hai
                   >
                     <SingleFriend {...item} />
@@ -130,11 +128,7 @@ const Friends = () => {
               {allUsers && allUsers.length > 0 ? (
                 allUsers.map((item, index) => (
                   <>
-                    <div
-                      key={item._id || index}
-                      onClick={() => navigate("/profile", { state: item })}
-                      className="cursor-pointer"
-                    >
+                    <div className="cursor-pointer">
                       <PeopleKNow {...item} key={item._id || index} />
                     </div>
                   </>

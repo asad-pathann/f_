@@ -4,6 +4,11 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { BiSolidSend } from "react-icons/bi";
 import io from "socket.io-client";
+import { Avatar, Stack } from "@mui/material";
+import { deepOrange, deepPurple } from "@mui/material/colors";
+import { useState } from "react";
+import { useEffect } from "react";
+
 const socket = io.connect("http://localhost:5441");
 
 // Is style se modal screen ke bilkul bottom-right corner mein fix ho jayega
@@ -22,17 +27,32 @@ const style = {
   overflow: "hidden",
 };
 
-export default function Messages({ username }) {
+export default function Messages({ username, reciver_id }) {
   const [open, setOpen] = React.useState(false);
+  const [control, setControl] = useState("");
+  const [sentMessage, setSentMessage] = useState([]);
+  const [receviedMessages, setreceviedMessages] = useState([]);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const handleMessage = () => {
+    socket.emit("sent_message", control);
+    setSentMessage([...sentMessage, control]);
+  };
+
+  useEffect(() => {
+    socket.on("recevied_message", (data) => {
+      setreceviedMessages([...receviedMessages, data]);
+    });
+  }, [socket]);
+
+  const allMessage = [...sentMessage, ...receviedMessages];
   return (
     <div>
       {/* Button ko aapki css ke sath bilkul waisa hi rakha hai */}
       <button
         onClick={handleOpen}
-        className="transition rounded-md px-4 py-2 bg-gray-200 font-semibold whitespace-nowrap shadow-sm"
+        className="transition relative rounded-md px-4 py-2 bg-gray-200 font-semibold whitespace-nowrap shadow-sm"
       >
         Message
       </button>
@@ -49,8 +69,11 @@ export default function Messages({ username }) {
           <div className="flex items-center justify-between p-3 border-b bg-white">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-xs font-bold">
-                MK
+                <Avatar sx={{ bgcolor: deepPurple[300] }}>
+                  {username?.charAt(0)}
+                </Avatar>
               </div>
+
               <div>
                 <Typography
                   id="modal-modal-title"
@@ -73,16 +96,41 @@ export default function Messages({ username }) {
           </div>
 
           {/* Main Body (Niche push karne ke liye flex-1 aur justify-end kiya hai) */}
-          <div className="flex-1 p-4 overflow-y-auto bg-white flex flex-col justify-end items-center text-center"></div>
+          <div className="flex flex-col overflow-y-scroll flex-1">
+            {allMessage?.map((item, index) => {
+              return (
+                <>
+                  {item?.sentMessage ? (
+                    <>
+                      <p className="text-center ms-auto w-max bg-green-500  text-white p-2 my-3">
+                        {item}
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <p className="text-center w-max me-auto px-5 py-2 rounded-full bg-gray-300 p-2 my-3">
+                        {item}
+                      </p>
+                    </>
+                  )}
+                </>
+              );
+            })}
+          </div>
 
           {/* Footer Input Section (Bottom) */}
-          <div className="p-3 border-t bg-white flex items-center gap-2">
+          <div className="p-3 bottom-0 border-t bg-white flex items-center gap-2">
             <input
+              onChange={(e) => setControl(e.target.value)}
+              value={control}
               type="text"
               placeholder="Aa"
-              className="w-full bg-gray-100 rounded-full py-2 px-4 text-sm outline-none"
+              className="w-full bottom-0 bg-gray-100 rounded-full py-2 px-4 text-sm outline-none"
             />
-            <button className="text-blue-600 font-bold text-lg">
+            <button
+              onClick={handleMessage}
+              className=" right-4 text-blue-600 cursor-pointer font-bold text-lg"
+            >
               <BiSolidSend />
             </button>
           </div>

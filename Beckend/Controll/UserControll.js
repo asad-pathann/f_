@@ -4,19 +4,19 @@ import jwt from "jsonwebtoken";
 import otpGenerator from "otp-generator";
 import { sendOtp } from "../extra/sendOtp.js";
 
-// bcrypt  jwt
 export const register = async (req, res) => {
   try {
     const { f_name, l_name, email, password, date, month, year, gander } =
       req.body;
 
-    // 1. Validation check
+    // 1. Validation check (FIX: month ko bhi add kar diya hai)
     if (
       !f_name ||
       !l_name ||
       !password ||
       !email ||
       !date ||
+      !month ||
       !year ||
       !gander
     ) {
@@ -40,23 +40,28 @@ export const register = async (req, res) => {
     // 4. Hash Password
     const hashPassword = await bcrypt.hash(password, 10);
 
-    // 5. Create New User
+    // 5. Create New User (OTP yahan database mein store ho raha hai)
     const newUser = await User.create({
       f_name,
       l_name,
       email,
       password: hashPassword,
       gander,
-      otp,
+      otp, // Sahi ja raha hai database mein
       date,
       year,
       month,
     });
 
-    // 6. Send OTP Email
-    sendOtp({ email, otp });
+    // 6. Send OTP Email (FIX: Agar ye async function hai toh await lagayein)
+    try {
+      await sendOtp({ email, otp });
+    } catch (mailErr) {
+      console.log("Email sending failed:", mailErr);
+      // Agar email send na ho toh yahan se pata chal jayega
+    }
 
-    // 7. 10 Minutes baad OTP automatic null karne ke liye timeout
+    // 7. Timeout (Local testing mein ye chalega, par production ke liye mongoose expiry behtar hai)
     setTimeout(async () => {
       try {
         await User.findOneAndUpdate({ email }, { otp: null });
@@ -66,8 +71,9 @@ export const register = async (req, res) => {
       }
     }, 600000);
 
-    // 8. Final Single Response (Sirf ek baar data bhejenge)
+    // 8. Final Single Response
     return res.status(201).json({
+      message: "User registered successfully! Please check your email for OTP.",
       _id: newUser._id,
       f_name: newUser.f_name,
       l_name: newUser.l_name,

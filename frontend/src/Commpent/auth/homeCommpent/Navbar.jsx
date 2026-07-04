@@ -49,14 +49,16 @@ const Navbar = () => {
             <HiOutlineArrowNarrowLeft size={40} className={``} />
           </div>
 
-          <img
-            className={`transition-transform duration-150 ${
-              focus ? "scale-0" : "scale-100"
-            }`}
-            src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Facebook_Logo_2023.png"
-            width={"40px"}
-            alt=""
-          />
+          <Link to={"/home"}>
+            <img
+              className={`transition-transform duration-150 ${
+                focus ? "scale-0" : "scale-100"
+              }`}
+              src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Facebook_Logo_2023.png"
+              width={"40px"}
+              alt=""
+            />
+          </Link>
 
           <div className="flex items-center gap-2 bg-[#F0F2F5] rounded-full p-2 max-w-[300px] flex-grow">
             <IoSearchSharp size={20} className="ms-1 text-gray-600" />

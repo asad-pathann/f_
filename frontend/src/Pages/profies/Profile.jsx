@@ -6,20 +6,26 @@ import { BiDotsHorizontalRounded } from "react-icons/bi";
 import { PiLineSegmentsThin } from "react-icons/pi";
 import { IoIosSettings } from "react-icons/io";
 import { BsGridFill } from "react-icons/bs";
-import { useSelector } from "react-redux";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import Messages from "../chats/Messages";
 import Navbar from "./../../Commpent/auth/homeCommpent/Navbar";
+import { GetSingleUserData } from "../../feature/User/UserSlice";
 
 const Profile = () => {
   const { user } = useSelector((state) => state.auth);
+
   const navigate = useNavigate();
+
   const location = useLocation();
 
+  const dispacth = useDispatch();
   // Agar state mein user data aaya hai toh wo use hoga, warna logged-in user
+
   const item = location.state || {};
 
   console.log(item);
+
   const currentProfile = Object.keys(item).length > 0 ? item : user;
 
   useEffect(() => {
@@ -29,8 +35,20 @@ const Profile = () => {
   }, [user, navigate]);
 
   const username = currentProfile?.name || "User Name..";
+
   const friendsCount = currentProfile?.friendsCount || 0;
+
   const profilePic = currentProfile?.profilePicture || "/asad.jpeg";
+
+  const { id } = useParams();
+
+  useEffect(() => {
+    const user_id = id;
+
+    dispacth(GetSingleUserData(user_id));
+  }, []);
+
+  const { myinfo } = useSelector((state) => state.auth);
 
   return (
     <>
@@ -69,8 +87,8 @@ const Profile = () => {
 
             {/* Name and Friend Count */}
             <div className="flex flex-col -translate-y-10 lg:translate-y-0 text-center lg:text-left">
-              <p className="text-3xl font-bold text-gray-900">
-                {item?.f_name} {item?.l_name}
+              <p className="text-xl font-bold text-gray-900">
+                {myinfo?.f_name} &nbsp; {myinfo?.l_name}
               </p>
               <p className="text-gray-500 font-medium">
                 {friendsCount} friends
@@ -84,7 +102,7 @@ const Profile = () => {
               + Add to story
             </button>
 
-            <Messages username={item?.f_name} />
+            <Messages username={myinfo?.f_name} reciver_id={myinfo?._id} />
             <button className="bg-gray-200 hover:bg-gray-300 transition rounded-md px-4 py-2 font-semibold text-gray-800 whitespace-nowrap">
               <MdEdit className="inline mr-1" /> Edit profile
             </button>

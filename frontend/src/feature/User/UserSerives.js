@@ -20,3 +20,9 @@ export const GetUuser = async () => {
 
   return response.data;
 };
+
+export const GetInfo = async (user_id) => {
+  const response = await axios.get(`${base_url}/get-info/${user_id}`);
+
+  return response.data;
+};
