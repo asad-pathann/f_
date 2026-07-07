@@ -29,24 +29,46 @@ const style = {
 
 export default function Messages({ username, reciver_id }) {
   const [open, setOpen] = React.useState(false);
-  const [control, setControl] = useState("");
+  const [message, setMessage] = useState("");
   const [sentMessage, setSentMessage] = useState([]);
-  const [receviedMessages, setreceviedMessages] = useState([]);
+  const [reciveredMessage, setReciveredMessage] = useState([]);
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const handleMessage = () => {
-    socket.emit("sent_message", control);
-    setSentMessage([...sentMessage, control]);
-  };
+    const newMes = {
+      sent: true,
+      time: Date.now(),
+      message,
+    };
 
+    socket.emit("sent_message", newMes);
+
+    setReciveredMessage((pre) => [...pre, newMes]);
+
+    setMessage("");
+  };
   useEffect(() => {
     socket.on("recevied_message", (data) => {
-      setreceviedMessages([...receviedMessages, data]);
+      setReciveredMessage((pre) => [
+        ...pre,
+        {
+          message: data.message,
+          time: data.time,
+          sent: false,
+        },
+      ]);
     });
-  }, [socket]);
 
-  const allMessage = [...sentMessage, ...receviedMessages];
+    return () => {
+      socket.off("recevied_message");
+    };
+  }, []);
+
+  const allMessage = [...sentMessage, ...reciveredMessage].sort((a, b) => {
+    return a.time - b.time;
+  });
   return (
     <div>
       {/* Button ko aapki css ke sath bilkul waisa hi rakha hai */}
@@ -100,17 +122,33 @@ export default function Messages({ username, reciver_id }) {
             {allMessage?.map((item, index) => {
               return (
                 <>
-                  {item?.sentMessage ? (
+                  {item?.sent ? (
                     <>
-                      <p className="text-center ms-auto w-max bg-green-500  text-white p-2 my-3">
-                        {item}
-                      </p>
+                      <div className="flex flex-col justify-center">
+                        <p className="bg-green-400 mt-2   text-white w-max py-2 px-5 ms-auto rounded-full">
+                          {item?.message}
+                        </p>
+                        <small className="ms-auto">
+                          {new Date(item.time).toLocaleTimeString([], {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </small>
+                      </div>
                     </>
                   ) : (
                     <>
-                      <p className="text-center w-max me-auto px-5 py-2 rounded-full bg-gray-300 p-2 my-3">
-                        {item}
-                      </p>
+                      <div className="flex flex-col justify-center">
+                        <p className="bg-gray-300  mt-2 py-2  px-5 text-black w-max rounded-full">
+                          {item?.message}
+                        </p>
+                        <small className=" text-gray-600  ">
+                          {new Date(item.time).toLocaleTimeString([], {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </small>
+                      </div>
                     </>
                   )}
                 </>
@@ -121,8 +159,8 @@ export default function Messages({ username, reciver_id }) {
           {/* Footer Input Section (Bottom) */}
           <div className="p-3 bottom-0 border-t bg-white flex items-center gap-2">
             <input
-              onChange={(e) => setControl(e.target.value)}
-              value={control}
+              onChange={(e) => setMessage(e.target.value)}
+              value={message}
               type="text"
               placeholder="Aa"
               className="w-full bottom-0 bg-gray-100 rounded-full py-2 px-4 text-sm outline-none"
