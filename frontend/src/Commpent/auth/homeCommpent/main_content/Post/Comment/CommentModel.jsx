@@ -89,7 +89,7 @@ export default function CommentModal({
             className={`overflow-y-scroll  ${
               background?.startColor !== "#ffffff" || background?.image
                 ? "h-[600px]"
-                : "h-[500px]"
+                : "h-[300px]"
             } hide_scroll`}
           >
             {/* Header */}
@@ -211,6 +211,11 @@ export default function CommentModal({
               <div className="flex items-center w-full bg-gray-100 rounded-full px-3 py-2">
                 {/* Input */}
                 <input
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handleComment();
+                    }
+                  }}
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
                   type="text"

@@ -14,6 +14,15 @@ import { Server } from "socket.io";
 dotenv.config();
 const app = express();
 
+// const my_server = http.createServer(app);
+
+// const io = new Server(my_server, {
+//   cors: {
+//     origin: "*",
+//     method: "*",
+//   },
+// });
+
 const my_server = http.createServer(app);
 
 const io = new Server(my_server, {
@@ -24,7 +33,7 @@ const io = new Server(my_server, {
 });
 
 io.on("connection", (socket) => {
-  console.log(`server socket ${socket.id.cyan}`);
+  console.log(`socket connected ${socket.id.cyan}`);
 
   socket.on("sent_message", (data) => {
     console.log(data);
@@ -32,6 +41,16 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("recevied_message", data);
   });
 });
+
+// io.on("connection", (socket) => {
+//   console.log(`server socket ${socket.id.cyan}`);
+
+//   socket.on("sent_message", (data) => {
+//     console.log(data);
+
+//     socket.broadcast.emit("recevied_message", data);
+//   });
+// });
 
 app.use(cors());
 ConnectDB();

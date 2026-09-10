@@ -35,18 +35,25 @@ export default function Messages({ username, reciver_id }) {
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [currentTime, setCurrentTime] = useState(Date.now());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(Date.now());
+    }, 60000); // 1 minute
+
+    return () => clearInterval(timer);
+  }, []);
 
   const handleMessage = () => {
-    const newMes = {
+    const newMessage = {
       sent: true,
       time: Date.now(),
       message,
     };
+    socket.emit("sent_message", newMessage);
 
-    socket.emit("sent_message", newMes);
-
-    setReciveredMessage((pre) => [...pre, newMes]);
-
+    setSentMessage((pre) => [...pre, newMessage]);
     setMessage("");
   };
   useEffect(() => {
@@ -162,6 +169,11 @@ export default function Messages({ username, reciver_id }) {
               onChange={(e) => setMessage(e.target.value)}
               value={message}
               type="text"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleMessage("");
+                }
+              }}
               placeholder="Aa"
               className="w-full bottom-0 bg-gray-100 rounded-full py-2 px-4 text-sm outline-none"
             />

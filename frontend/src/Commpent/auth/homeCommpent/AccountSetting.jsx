@@ -20,6 +20,11 @@ const AccountSetting = () => {
     localStorage.removeItem("user");
     navigate("/");
   };
+
+  const handleClick = () => {
+    navigate(`/profile/${user?._id}`);
+  };
+
   return (
     <>
       <div
@@ -33,12 +38,11 @@ const AccountSetting = () => {
             <div className=" flex h-[50px] w-[50px] justify-center items-center bg-gray-200  rounded-full ">
               <FaUser size={20} />
             </div>
-            <div className=" text-gray-700">
-              <h3 className="text-lg font-semibold capitalize">Username</h3>
 
-              <p className="text-sm font-semibold">
-                {user?.f_name} {user?.l_name}
-              </p>
+            <div onClick={handleClick} className=" text-gray-700">
+              <h3 className="text-lg  font-semibold capitalize">
+                {user?.f_name}
+              </h3>
             </div>
           </div>
           <hr className="h-[1px] my-1  bg-gray-300 border-0 " />

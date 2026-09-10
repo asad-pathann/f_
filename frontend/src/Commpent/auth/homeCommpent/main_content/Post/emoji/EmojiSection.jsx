@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ReactData } from "../../../../../../feature/User/post/postSLice";
-import { FaRegThumbsUp } from "react-icons/fa";
 import { BsHandThumbsUp } from "react-icons/bs";
 
 const emojis = [
@@ -33,54 +32,88 @@ const emojis = [
   },
 ];
 
-const EmojiSection = ({ post_id, like }) => {
+const EmojiSection = ({ post_id, like = [] }) => {
   const [showEmojis, setShowEmojis] = useState(false);
   const [selectedEmoji, setSelectedEmoji] = useState(null);
   const dispatch = useDispatch();
 
-  const [select, setselect] = useState(null);
-
   const user = useSelector((state) => state.auth);
+  const userId = user?._id || user?.user?._id;
 
+  const closeTimer = useRef(null);
+
+  // ✅ like prop se sync karo
+  useEffect(() => {
+    if (!like || !userId) {
+      setSelectedEmoji(null);
+      return;
+    }
+
+    const myReaction = like.find(
+      (item) => (item?.user_id === userId || item?.id === userId) && item?.type,
+    );
+
+    if (myReaction) {
+      const found = emojis.find((e) => e.name === myReaction.type);
+      setSelectedEmoji(found || null);
+    } else {
+      setSelectedEmoji(null);
+    }
+  }, [like, userId]);
+
+  // ✅ Mouse enter — popup kholo, timer clear karo
+  const handleMouseEnter = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    setShowEmojis(true);
+  };
+
+  // ✅ Mouse leave — thoda delay de kar popup band karo
+  const handleMouseLeave = () => {
+    closeTimer.current = setTimeout(() => setShowEmojis(false), 200);
+  };
+
+  // ✅ Emoji click — turant popup band + emoji set
   const handleEmojiClick = (emoji) => {
-    setSelectedEmoji(emoji);
+    // popup turant band
     setShowEmojis(false);
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+
+    // toggle logic
+    const isSame = selectedEmoji?.name === emoji.name;
+
+    // Optimistic UI — turant button mein dikhao
+    setSelectedEmoji(isSame ? null : emoji);
 
     const reactionData = {
       post_id,
-      user_id: user?._id,
-      emoji: emoji.name,
+      user_id: userId,
+      emoji: isSame ? null : emoji.name,
     };
 
-    console.log(user?._id); // Correct log
+    console.log("Reaction:", reactionData);
     dispatch(ReactData(reactionData));
-    setselect(emoji);
   };
-
-  const ispresent = like.find((item) => {
-    return item?.id == user?._id;
-  });
 
   return (
     <div className="relative inline-block">
       {/* Main Like Button */}
       <button
-        onMouseEnter={() => setShowEmojis(true)}
-        onMouseLeave={() => setTimeout(() => setShowEmojis(false), 3000)} // Small delay to allow clicking
-        className="px-4 py-2  **: rounded-full hover:bg-gray-200 transition flex items-center gap-1"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        className="px-4 py-2 rounded-full hover:bg-gray-200 transition-all duration-200 flex items-center gap-1"
       >
-        <span className="text-xl">
+        <span className="text-xl transition-transform duration-200">
           {selectedEmoji ? (
-            selectedEmoji.icon
+            <span className="inline-block animate-pop">
+              {selectedEmoji.icon}
+            </span>
           ) : (
-            <>
-              <BsHandThumbsUp className="text-gray-600 text-lg" />
-            </>
+            <BsHandThumbsUp className="text-gray-600 text-lg" />
           )}
         </span>
         <span
-          className={`font-semibold text-gray-700 text-sm flex gap-1 ${
-            selectedEmoji ? selectedEmoji.color : ""
+          className={`font-semibold text-sm flex gap-1 transition-colors duration-200 ${
+            selectedEmoji ? selectedEmoji.color : "text-gray-700"
           }`}
         >
           {selectedEmoji
@@ -90,25 +123,30 @@ const EmojiSection = ({ post_id, like }) => {
         </span>
       </button>
 
-      {/* Emoji Reactions Popup */}
-      {showEmojis && (
-        <div
-          onMouseEnter={() => setShowEmojis(true)}
-          onMouseLeave={() => setShowEmojis(false)}
-          className="absolute -top-14 left-1/2 -translate-x-1/2 z-50 flex gap-2 px-4 py-2 bg-white rounded-full shadow-lg transition-all duration-200"
-        >
-          {emojis.map((emoji) => (
-            <button
-              key={emoji.name}
-              title={emoji.name}
-              onClick={() => handleEmojiClick(emoji)}
-              className={`text-2xl cursor-pointer transition-transform duration-200 hover:scale-125 ${emoji.bgColor} ${emoji.color} p-1 rounded-full`}
-            >
-              {emoji.icon}
-            </button>
-          ))}
-        </div>
-      )}
+      {/* Emoji Popup — smooth fade + scale */}
+      <div
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        className={`absolute -top-14 left-1/2 -translate-x-1/2 z-50 flex gap-2 px-4 py-2 bg-white rounded-full shadow-lg
+          transition-all duration-200 ease-out origin-bottom
+          ${
+            showEmojis
+              ? "opacity-100 scale-100 translate-y-0 pointer-events-auto"
+              : "opacity-0 scale-75 translate-y-2 pointer-events-none"
+          }`}
+      >
+        {emojis.map((emoji, i) => (
+          <button
+            key={emoji.name}
+            title={emoji.name}
+            onClick={() => handleEmojiClick(emoji)}
+            style={{ transitionDelay: showEmojis ? `${i * 25}ms` : "0ms" }}
+            className={`text-2xl cursor-pointer transition-all duration-200 hover:scale-125 hover:-translate-y-1 ${emoji.bgColor} ${emoji.color} p-1 rounded-full`}
+          >
+            {emoji.icon}
+          </button>
+        ))}
+      </div>
     </div>
   );
 };
