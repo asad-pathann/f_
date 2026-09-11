@@ -41,7 +41,7 @@ const AccountSetting = () => {
 
             <div onClick={handleClick} className=" text-gray-700">
               <h3 className="text-lg  font-semibold capitalize">
-                {user?.f_name}
+                {`${user?.f_name} ${user?.l_name}`}
               </h3>
             </div>
           </div>

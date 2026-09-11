@@ -161,7 +161,7 @@ export default function BasicModal() {
     <div>
       <div
         onClick={handleOpen}
-        className="bg-gray-200 p-[7px] flex items-center rounded-full w-full cursor-pointer"
+        className="bg-gray-200 p-1.5 flex items-center rounded-full w-full cursor-pointer"
       >
         <h3 className="font-semibold w-full pointer-events-none capitalize text-gray-500">
           What's on your mind, {user?.f_name}?

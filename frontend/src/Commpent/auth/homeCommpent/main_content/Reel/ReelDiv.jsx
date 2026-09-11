@@ -1,5 +1,6 @@
 import React from "react";
 import { FaPlus } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 const ReelDiv = () => {
   return (
@@ -24,20 +25,22 @@ const ReelDiv = () => {
             </h4>
           </div>
         </div>
-        <div className="relative shadow-2xl rounded-md overflow-hidden ">
-          <div className="absolute top-[10px] overflow-hidden left-[10px] border border-4 border-blue-500 rounded-full h-[40px] w-[40px]">
+        <Link to={"/reel"}>
+          <div className="relative shadow-2xl rounded-md overflow-hidden ">
+            <div className="absolute top-[10px] overflow-hidden left-[10px] border border-4 border-blue-500 rounded-full h-[40px] w-[40px]">
+              <img
+                src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                alt=""
+              />
+            </div>
             <img
-              src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNbkECXtEG_6-RV7CSNgNoYUGZE-JCliYm9g&s"
+              width={"100%"}
+              className="h-[200px] object-cover"
               alt=""
             />
           </div>
-          <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNbkECXtEG_6-RV7CSNgNoYUGZE-JCliYm9g&s"
-            width={"100%"}
-            className="h-[200px] object-cover"
-            alt=""
-          />
-        </div>
+        </Link>
       </div>
     </>
   );

@@ -8,9 +8,8 @@ import { Avatar, Stack } from "@mui/material";
 import { deepOrange, deepPurple } from "@mui/material/colors";
 import { useState } from "react";
 import { useEffect } from "react";
-import { Link, UNSAFE_SingleFetchRedirectSymbol } from "react-router-dom";
+import { UNSAFE_SingleFetchRedirectSymbol } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { FaVideo } from "react-icons/fa6";
 
 const socket = io.connect("http://localhost:5441");
 
@@ -30,7 +29,7 @@ const style = {
   overflow: "hidden",
 };
 
-export default function Messages({ username, reciver_id }) {
+export default function MessagePanel({ username, reciver_id }) {
   const [open, setOpen] = React.useState(false);
   const [message, setMessage] = useState("");
   const [sentMessage, setSentMessage] = useState([]);
@@ -45,6 +44,8 @@ export default function Messages({ username, reciver_id }) {
       sent: true,
       time: Date.now(),
       message,
+      sender_id: user?._id,
+      reciver_id,
     };
     socket.emit("sent_message", newMessage);
 
@@ -53,15 +54,21 @@ export default function Messages({ username, reciver_id }) {
   };
   useEffect(() => {
     socket.on("recevied_message", (data) => {
-      setReciveredMessage((pre) => [
-        ...pre,
-        {
-          message: data.message,
-          time: data.time,
-          sent: false,
-        },
-      ]);
+      if (data?.reciver_id === user?._id) {
+        setReciveredMessage((pre) => [
+          ...pre,
+          {
+            message: data.message,
+            time: data.time,
+            sent: false,
+          },
+        ]);
+      }
     });
+
+    return () => {
+      socket.off("recevied_message");
+    };
   }, []);
 
   const allMessage = [...sentMessage, ...reciveredMessage].sort((a, b) => {
@@ -107,22 +114,12 @@ export default function Messages({ username, reciver_id }) {
                 </span>
               </div>
             </div>
-            <div className="flex items-center gap-1 ">
-              <Link target="_blenk" to={"/vedio"}>
-                <button
-                  onClick={handleClose}
-                  className="text-purple-600 cursor-pointer hover:text-purple-800 font-bold text-lg px-2"
-                >
-                  <FaVideo />
-                </button>
-              </Link>
-              <button
-                onClick={handleClose}
-                className="text-purple-600 hover:text-purple-800 font-bold text-lg px-2"
-              >
-                ✕
-              </button>
-            </div>
+            <button
+              onClick={handleClose}
+              className="text-purple-600 hover:text-purple-800 font-bold text-lg px-2"
+            >
+              ✕
+            </button>
           </div>
 
           {/* Main Body (Niche push karne ke liye flex-1 aur justify-end kiya hai) */}
@@ -137,10 +134,8 @@ export default function Messages({ username, reciver_id }) {
                           {item?.message}
                         </p>
                         <small className="ms-auto">
-                          {new Date(item.time).toLocaleTimeString([], {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })}
+                          {Math.floor((currentTime - item.time) / 60000) + 1}{" "}
+                          min ago
                         </small>
                       </div>
                     </>

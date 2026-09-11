@@ -68,6 +68,7 @@ const GetpostData = ({
               <h2 className="text-md  font-semibold capitalize  text-gray-700">
                 {user_id?.f_name} {user_id?.l_name}
               </h2>
+
               <div className="flex gap-[4px] items-center ">
                 <p className="text-sm text-gray-500">
                   {moment(createAt).fromNow()}
@@ -84,6 +85,7 @@ const GetpostData = ({
             <IoCloseSharp size={25} className="text-gray-600" />
           </div> */}
         </div>
+
         <p
           className={`${
             background?.startColor == "#ffffff"

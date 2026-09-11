@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./globals.css";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -13,12 +13,22 @@ import Friends from "./Pages/Friend/Friend";
 import "react-loading-skeleton/dist/skeleton.css";
 import Profile from "./Pages/profies/Profile";
 import Otp from "./Pages/Otp";
+import MessagePanel from "./Pages/chats/MessagePanel";
+import Reels from "./Pages/ReelsPage/Reels";
+import VideoCallZego from "../vedio_call/VedioCall";
 
 const App = () => {
+  const { show, setShow } = useState(false);
   return (
     <>
       <Router>
         <Toaster />
+
+        {show && (
+          <>
+            <MessagePanel />
+          </>
+        )}
 
         <Routes>
           <Route path="/" element={<Login />} />
@@ -29,7 +39,8 @@ const App = () => {
           <Route path="/market" element={<Market />} />
           <Route path="/profile/:id" element={<Profile />} />
           <Route path="/otp" element={<Otp />} />
-          {/* <Route path="/reels" element={<Reel />} /> */}
+          <Route path="/reel" element={<Reels />} />
+          <Route path="/vedio" element={<VideoCallZego />} />
         </Routes>
       </Router>
     </>
