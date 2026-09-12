@@ -16,6 +16,7 @@ import Otp from "./Pages/Otp";
 import MessagePanel from "./Pages/chats/MessagePanel";
 import Reels from "./Pages/ReelsPage/Reels";
 import VideoCallZego from "../vedio_call/VedioCall";
+import MiniToast from "../vedio_call/RingToast";
 
 const App = () => {
   const { show, setShow } = useState(false);
@@ -30,6 +31,7 @@ const App = () => {
           </>
         )}
 
+        {/* <MiniToast /> */}
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/register" element={<Register />} />

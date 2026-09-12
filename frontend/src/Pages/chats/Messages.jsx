@@ -4,26 +4,24 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { BiSolidSend } from "react-icons/bi";
 import io from "socket.io-client";
-import { Avatar, Stack } from "@mui/material";
-import { deepOrange, deepPurple } from "@mui/material/colors";
-import { useState } from "react";
-import { useEffect } from "react";
-import { Link, UNSAFE_SingleFetchRedirectSymbol } from "react-router-dom";
+import { Avatar } from "@mui/material";
+import { deepPurple } from "@mui/material/colors";
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { FaVideo } from "react-icons/fa6";
 
 const socket = io.connect("http://localhost:5441");
 
-// Is style se modal screen ke bilkul bottom-right corner mein fix ho jayega
 const style = {
   position: "absolute",
-  bottom: "10px", // Bottom se gap
-  right: "20px", // Right se gap
-  width: 360, // Chatbox ki width
-  height: 480, // Chatbox ki height
+  bottom: "10px",
+  right: "20px",
+  width: 360,
+  height: 480,
   bgcolor: "background.paper",
   boxShadow: 24,
-  borderRadius: "12px", // rounded corners jaisa messenger me hota h
+  borderRadius: "12px",
   display: "flex",
   flexDirection: "column",
   outline: "none",
@@ -31,45 +29,139 @@ const style = {
 };
 
 export default function Messages({ username, reciver_id }) {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
-  const [sentMessage, setSentMessage] = useState([]);
-  const [reciveredMessage, setReciveredMessage] = useState([]);
-
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [messages, setMessages] = useState([]);
 
   const { user } = useSelector((state) => state.auth);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  // =====================================================
+  // SEND MESSAGE
+  // =====================================================
+
   const handleMessage = () => {
+    // Empty message ko send nahi karna
+    if (!message.trim()) {
+      return;
+    }
+
+    // New message
     const newMessage = {
-      sent: true,
+      message: message.trim(),
       time: Date.now(),
-      message,
+      sender_id: user?._id,
+      reciver_id: reciver_id,
     };
+
+    console.log("SENDING MESSAGE:", newMessage);
+
+    // Server ko message send
     socket.emit("sent_message", newMessage);
 
-    setSentMessage((pre) => [...pre, newMessage]);
+    // Sender ki screen par message show
+    setMessages((prev) => [
+      ...prev,
+      {
+        ...newMessage,
+        sent: true,
+      },
+    ]);
+
+    // Input clear
     setMessage("");
   };
+
+  // =====================================================
+  // RECEIVE MESSAGE
+  // =====================================================
+
   useEffect(() => {
-    socket.on("recevied_message", (data) => {
-      setReciveredMessage((pre) => [
-        ...pre,
+    const handleReceivedMessage = (data) => {
+      console.log("RECEIVED MESSAGE:", data);
+
+      const senderId = String(data?.sender_id);
+      const receiverId = String(data?.reciver_id);
+
+      const currentUserId = String(user?._id);
+
+      const currentChatUserId = String(reciver_id);
+
+      const isCurrentChat =
+        (data?.sender_id === user?._id &&
+          data?.reciver_id === data?.reciver_id) ||
+        (data?.sender_id === data?.reciver_id &&
+          data?.reciver_id === user?._id);
+
+      // Agar kisi doosri chat ka message hai
+      // to ignore kar do
+      if (!isCurrentChat) {
+        console.log("MESSAGE FROM OTHER CHAT - IGNORED");
+        return;
+      }
+
+      // =================================================
+      // DUPLICATE PREVENTION
+      // =================================================
+      //
+      // Apna message handleMessage() mein already
+      // messages state mein add kar chuke hain.
+      //
+      // Agar backend sender ko bhi received_message bhej raha
+      // hai to apna message dobara add nahi karna.
+      //
+
+      if (senderId === currentUserId) {
+        console.log("MY OWN MESSAGE - IGNORED");
+        return;
+      }
+
+      // =================================================
+      // RECEIVER MESSAGE ADD
+      // =================================================
+
+      setMessages((prev) => [
+        ...prev,
         {
-          message: data.message,
-          time: data.time,
+          message: data?.message,
+          time: data?.time,
+          sender_id: data?.sender_id,
+          reciver_id: data?.reciver_id,
           sent: false,
         },
       ]);
-    });
-  }, []);
+    };
 
-  const allMessage = [...sentMessage, ...reciveredMessage].sort((a, b) => {
+    // Socket listener
+    socket.on("recevied_message", handleReceivedMessage);
+
+    // Cleanup
+    return () => {
+      socket.off("recevied_message", handleReceivedMessage);
+    };
+  }, [user?._id, reciver_id]);
+
+  // =====================================================
+  // SORT MESSAGES BY TIME
+  // =====================================================
+
+  const allMessage = [...messages].sort((a, b) => {
     return a.time - b.time;
   });
+
   return (
     <div>
-      {/* Button ko aapki css ke sath bilkul waisa hi rakha hai */}
+      {/* =================================================
+          MESSAGE BUTTON
+      ================================================= */}
+
       <button
         onClick={handleOpen}
         className="transition relative rounded-md px-4 py-2 bg-gray-200 font-semibold whitespace-nowrap shadow-sm"
@@ -77,22 +169,26 @@ export default function Messages({ username, reciver_id }) {
         Message
       </button>
 
+      {/* =================================================
+          CHAT MODAL
+      ================================================= */}
+
       <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
-        // Backdrop click handler active rahega taaki bahar click karne se close ho jaye
       >
         <Box sx={style}>
-          {/* Header Section (Top) */}
+          {/* =================================================
+              HEADER
+          ================================================= */}
+
           <div className="flex items-center justify-between p-3 border-b bg-white">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-xs font-bold">
-                <Avatar sx={{ bgcolor: deepPurple[300] }}>
-                  {username?.charAt(0)}
-                </Avatar>
-              </div>
+              <Avatar sx={{ bgcolor: deepPurple[300] }}>
+                {username?.charAt(0)}
+              </Avatar>
 
               <div>
                 <Typography
@@ -102,13 +198,17 @@ export default function Messages({ username, reciver_id }) {
                 >
                   {username}
                 </Typography>
+
                 <span className="text-[10px] text-gray-500 block -mt-1">
                   Active 44m ago
                 </span>
               </div>
             </div>
-            <div className="flex items-center gap-1 ">
-              <Link target="_blenk" to={"/vedio"}>
+
+            {/* Header buttons */}
+
+            <div className="flex items-center gap-1">
+              <Link target="_blank" to="/vedio">
                 <button
                   onClick={handleClose}
                   className="text-purple-600 cursor-pointer hover:text-purple-800 font-bold text-lg px-2"
@@ -116,6 +216,7 @@ export default function Messages({ username, reciver_id }) {
                   <FaVideo />
                 </button>
               </Link>
+
               <button
                 onClick={handleClose}
                 className="text-purple-600 hover:text-purple-800 font-bold text-lg px-2"
@@ -125,62 +226,72 @@ export default function Messages({ username, reciver_id }) {
             </div>
           </div>
 
-          {/* Main Body (Niche push karne ke liye flex-1 aur justify-end kiya hai) */}
-          <div className="flex flex-col overflow-y-scroll flex-1">
-            {allMessage?.map((item, index) => {
-              return (
-                <>
-                  {item?.sent ? (
-                    <>
-                      <div className="flex flex-col justify-center">
-                        <p className="bg-green-400 mt-2   text-white w-max py-2 px-5 ms-auto rounded-full">
-                          {item?.message}
-                        </p>
-                        <small className="ms-auto">
-                          {new Date(item.time).toLocaleTimeString([], {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })}
-                        </small>
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div className="flex flex-col justify-center">
-                        <p className="bg-gray-300  mt-2 py-2  px-5 text-black w-max rounded-full">
-                          {item?.message}
-                        </p>
-                        <small className=" text-gray-600  ">
-                          {new Date(item.time).toLocaleTimeString([], {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })}
-                        </small>
-                      </div>
-                    </>
-                  )}
-                </>
-              );
-            })}
+          {/* =================================================
+              CHAT BODY
+          ================================================= */}
+
+          <div className="flex flex-col overflow-y-auto flex-1 p-2">
+            {allMessage.length === 0 && (
+              <div className="flex justify-center items-center h-full text-gray-400 text-sm">
+                No messages yet
+              </div>
+            )}
+
+            {allMessage.map((item, index) => (
+              <div
+                key={`${item.time}-${index}`}
+                className={`flex flex-col mb-2 ${
+                  item.sent ? "items-end" : "items-start"
+                }`}
+              >
+                {/* Message */}
+
+                <p
+                  className={`mt-1 py-2 px-5 w-max max-w-[80%] rounded-full ${
+                    item.sent
+                      ? "bg-green-400 text-white"
+                      : "bg-gray-300 text-black"
+                  }`}
+                >
+                  {item.message}
+                </p>
+
+                {/* Time */}
+
+                <small className="text-gray-500 text-[10px]">
+                  {new Date(item.time).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </small>
+              </div>
+            ))}
           </div>
 
-          {/* Footer Input Section (Bottom) */}
-          <div className="p-3 bottom-0 border-t bg-white flex items-center gap-2">
+          {/* =================================================
+              MESSAGE INPUT
+          ================================================= */}
+
+          <div className="p-3 border-t bg-white flex items-center gap-2">
             <input
-              onChange={(e) => setMessage(e.target.value)}
+              onChange={(e) => {
+                setMessage(e.target.value);
+              }}
               value={message}
               type="text"
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
-                  handleMessage("");
+                  e.preventDefault();
+                  handleMessage();
                 }
               }}
               placeholder="Aa"
-              className="w-full bottom-0 bg-gray-100 rounded-full py-2 px-4 text-sm outline-none"
+              className="w-full bg-gray-100 rounded-full py-2 px-4 text-sm outline-none"
             />
+
             <button
               onClick={handleMessage}
-              className=" right-4 text-blue-600 cursor-pointer font-bold text-lg"
+              className="text-blue-600 cursor-pointer font-bold text-lg"
             >
               <BiSolidSend />
             </button>
