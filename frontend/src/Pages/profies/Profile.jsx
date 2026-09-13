@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { IoCameraSharp, IoMenu } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
 import { MdEdit, MdKeyboardArrowDown } from "react-icons/md";
@@ -11,21 +11,26 @@ import { useNavigate, useLocation, useParams } from "react-router-dom";
 import Messages from "../chats/Messages";
 import Navbar from "./../../Commpent/auth/homeCommpent/Navbar";
 import { GetSingleUserData } from "../../feature/User/UserSlice";
+import CallToast from "../../../vedio_call/RingToast";
+import io from "socket.io-client";
+import toast from "react-hot-toast";
+
+const socket = io.connect("http://localhost:5441");
 
 const Profile = () => {
   const { user } = useSelector((state) => state.auth);
 
+  // ✅ FIX 1: Array destructuring [ ] use karein, { } nahi
+  const [userName, setUserName] = useState(null);
+
+  // ✅ FIX 2: openToast ki initial value false rakhein
+  const [openToast, setOpenToast] = useState(false);
+
   const navigate = useNavigate();
-
   const location = useLocation();
-
   const dispacth = useDispatch();
-  // Agar state mein user data aaya hai toh wo use hoga, warna logged-in user
 
   const item = location.state || {};
-
-  console.log(item);
-
   const currentProfile = Object.keys(item).length > 0 ? item : user;
 
   useEffect(() => {
@@ -35,23 +40,37 @@ const Profile = () => {
   }, [user, navigate]);
 
   const username = currentProfile?.name || "User Name..";
-
   const friendsCount = currentProfile?.friendsCount || 0;
-
   const profilePic = currentProfile?.profilePicture || "/asad.jpeg";
 
   const { id } = useParams();
 
   useEffect(() => {
     const user_id = id;
-
     dispacth(GetSingleUserData(user_id));
   }, []);
 
   const { myinfo } = useSelector((state) => state.auth);
 
+  // ✅ FIX 3: user ko dependency mein daalein taake listener stale na ho
+  useEffect(() => {
+    socket.on("received_calling", (data) => {
+      console.log("Calling data:", data);
+      if (data?.reciver_id == user?._id) {
+        setOpenToast(true);
+        setUserName(data?.sender_f_name);
+      }
+    });
+
+    // ✅ Cleanup bhi add karein (memory leak se bachne ke liye)
+    return () => {
+      socket.off("received_calling");
+    };
+  }, [user]);
+
   return (
     <>
+      {openToast && <CallToast userName={userName} />}
       <Navbar />
       <div className="bg-white">
         {/* ================= COVER PHOTO ================= */}
@@ -102,7 +121,10 @@ const Profile = () => {
               + Add to story
             </button>
 
-            <Messages username={myinfo?.f_name} reciver_id={myinfo?._id} />
+            <Messages
+              username={`${myinfo?.f_name} ${myinfo?.l_name}`}
+              reciver_id={myinfo?._id}
+            />
             <button className="bg-gray-200 hover:bg-gray-300 transition rounded-md px-4 py-2 font-semibold text-gray-800 whitespace-nowrap">
               <MdEdit className="inline mr-1" /> Edit profile
             </button>

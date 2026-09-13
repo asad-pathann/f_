@@ -3,12 +3,10 @@ import Navbar from "../../Commpent/auth/homeCommpent/Navbar";
 import MainContent from "../../Commpent/auth/homeCommpent/main_content/MainContent";
 import AddSection from "../../Commpent/auth/homeCommpent/main_content/AddSection";
 import Sidebar from "../../Commpent/auth/homeCommpent/main_content/Sidebar";
-import MiniToast from "../../../vedio_call/RingToast";
 
 const Home = () => {
   return (
     <>
-      <MiniToast />
       <div className="bg-white">
         <Navbar />
       </div>

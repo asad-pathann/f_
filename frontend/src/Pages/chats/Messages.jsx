@@ -28,7 +28,7 @@ const style = {
   overflow: "hidden",
 };
 
-export default function Messages({ username, reciver_id }) {
+export default function Messages({ username, reciver_id, l_name }) {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
@@ -87,12 +87,12 @@ export default function Messages({ username, reciver_id }) {
     const handleReceivedMessage = (data) => {
       console.log("RECEIVED MESSAGE:", data);
 
-      const senderId = String(data?.sender_id);
-      const receiverId = String(data?.reciver_id);
+      // const senderId = String(data?.sender_id);
+      // const receiverId = String(data?.reciver_id);
 
-      const currentUserId = String(user?._id);
+      // const currentUserId = String(user?._id);
 
-      const currentChatUserId = String(reciver_id);
+      // const currentChatUserId = String(reciver_id);
 
       const isCurrentChat =
         (data?.sender_id === user?._id &&
@@ -156,6 +156,14 @@ export default function Messages({ username, reciver_id }) {
     return a.time - b.time;
   });
 
+  const handleCalling = () => {
+    socket.emit("calling", {
+      sender_id: user?._id,
+      reciver_id,
+      sender_f_name: `${user?.f_name} ${user?.l_name}`,
+    });
+  };
+
   return (
     <div>
       {/* =================================================
@@ -196,7 +204,7 @@ export default function Messages({ username, reciver_id }) {
                   variant="subtitle2"
                   className="font-bold"
                 >
-                  {username}
+                  {username} {l_name}
                 </Typography>
 
                 <span className="text-[10px] text-gray-500 block -mt-1">
@@ -208,7 +216,11 @@ export default function Messages({ username, reciver_id }) {
             {/* Header buttons */}
 
             <div className="flex items-center gap-1">
-              <Link target="_blank" to="/vedio">
+              <Link
+                onClick={handleCalling}
+                target="_blank"
+                to={`/vedio-call/${user._id}/${reciver_id}`}
+              >
                 <button
                   onClick={handleClose}
                   className="text-purple-600 cursor-pointer hover:text-purple-800 font-bold text-lg px-2"

@@ -40,6 +40,11 @@ io.on("connection", (socket) => {
 
     socket.broadcast.emit("recevied_message", data);
   });
+
+  socket.on("calling", (data) => {
+    console.log(data);
+    socket.broadcast.emit("received_calling", data);
+  });
 });
 
 // io.on("connection", (socket) => {

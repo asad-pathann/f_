@@ -4,11 +4,12 @@ import { MdOutlineOndemandVideo } from "react-icons/md";
 import { BsShop } from "react-icons/bs";
 import { RiHome5Fill, RiStore2Fill } from "react-icons/ri";
 import { FaUserFriends } from "react-icons/fa";
+import { GoHomeFill } from "react-icons/go";
 export const navdata = [
   {
     id: 1,
     title: "home",
-    icons: <RiHome5Fill size={25} color="blue" />,
+    icons: <GoHomeFill size={25} color="blue" />,
     Link: "/home",
   },
   {

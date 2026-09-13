@@ -1,13 +1,49 @@
 @import "tailwindcss";
-.hide_scroll {
-  overflow: auto; /* ya scroll, agar force scroll chahiye */
-  scrollbar-width: none; /* Firefox ke liye */
+
+/* ===== Tailwind v4 Custom Animations ===== */
+@theme {
+  --animate-slide-in: slide-in 0.4s ease-out;
+  --animate-ring: ring 0.8s ease-in-out infinite;
+
+  @keyframes slide-in {
+    0% {
+      transform: translateX(120%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes ring {
+    0%,
+    100% {
+      transform: rotate(0deg);
+    }
+    20%,
+    60% {
+      transform: rotate(-15deg);
+    }
+    40%,
+    80% {
+      transform: rotate(15deg);
+    }
+  }
 }
+
+/* ===== Aapki Purani CSS (same rakho) ===== */
+.hide_scroll {
+  overflow: auto;
+  scrollbar-width: none;
+}
+
 .bg_div {
   background-position: center center !important;
   background-repeat: no-repeat !important;
   background-size: cover !important;
 }
+
 @media (max-width: 950px) {
   .icons_div {
     display: none;

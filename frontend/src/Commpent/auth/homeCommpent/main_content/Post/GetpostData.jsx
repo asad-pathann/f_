@@ -85,7 +85,6 @@ const GetpostData = ({
             <IoCloseSharp size={25} className="text-gray-600" />
           </div> */}
         </div>
-
         <p
           className={`${
             background?.startColor == "#ffffff"

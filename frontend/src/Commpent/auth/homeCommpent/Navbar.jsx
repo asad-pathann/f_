@@ -32,11 +32,11 @@ const Navbar = () => {
       <div className="fixed top-0 left-0 bg-transparent min-h-screen"></div>
       <div
         onClick={(e) => e.stopPropagation()}
-        className="flex justify-between items-center shadow-md "
+        className="flex justify-between w-full items-center shadow-md "
       >
         {/* start div logo */}
         <div
-          className={`flex   gap-2 items-center shadow-gray-200 shadow-2xl rounded-md p-2 transition-shadow duration-150 ${
+          className={`flex   gap-2 items-center shadow-gray-200 shadow-2xl rounded-md py-2 transition-shadow duration-150 ${
             focus ? "shadow-gray-400 p-4 transition-all" : "shadow-gray-200"
           }`}
         >
@@ -73,7 +73,7 @@ const Navbar = () => {
         </div>
 
         {/* minu item */}
-        <ul className="flex gap-2 unstyled max-[950px]:hidden text-gray-800">
+        <ul className="flex gap-10 gap-5  unstyled max-[950px]:hidden text-gray-800">
           {navdata.map((item, index) => {
             return (
               <li

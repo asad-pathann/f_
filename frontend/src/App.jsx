@@ -42,7 +42,10 @@ const App = () => {
           <Route path="/profile/:id" element={<Profile />} />
           <Route path="/otp" element={<Otp />} />
           <Route path="/reel" element={<Reels />} />
-          <Route path="/vedio" element={<VideoCallZego />} />
+          <Route
+            path="/vedio-call/:sender_id/:reciver_id"
+            element={<VideoCallZego />}
+          />
         </Routes>
       </Router>
     </>
