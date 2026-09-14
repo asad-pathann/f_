@@ -217,14 +217,12 @@ export default function Messages({ username, reciver_id, l_name }) {
 
             <div className="flex items-center gap-1">
               <Link
+              
                 onClick={handleCalling}
                 target="_blank"
                 to={`/vedio-call/${user._id}/${reciver_id}`}
               >
-                <button
-                  onClick={handleClose}
-                  className="text-purple-600 cursor-pointer hover:text-purple-800 font-bold text-lg px-2"
-                >
+                <button className="text-purple-600 cursor-pointer hover:text-purple-800 font-bold text-lg px-2">
                   <FaVideo />
                 </button>
               </Link>

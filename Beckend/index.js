@@ -36,14 +36,16 @@ io.on("connection", (socket) => {
   console.log(`socket connected ${socket.id.cyan}`);
 
   socket.on("sent_message", (data) => {
-    console.log(data);
-
     socket.broadcast.emit("recevied_message", data);
   });
 
   socket.on("calling", (data) => {
-    console.log(data);
     socket.broadcast.emit("received_calling", data);
+  });
+
+  socket.on("answer", (data) => {
+    console.log(data);
+    socket.broadcast.emit("answer_call", data);
   });
 });
 

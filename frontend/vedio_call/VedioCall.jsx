@@ -23,6 +23,8 @@ export function getUrlParams(url = window.location.href) {
 }
 
 export default function VideoCallZego() {
+  const { reciver_id, sender_id } = useParams();
+
   const roomID = getUrlParams().get("roomID") || randomID(5);
   let myMeeting = async (element) => {
     // generate Kit Token
@@ -46,6 +48,7 @@ export default function VideoCallZego() {
       window.location.pathname +
       "?roomID=" +
       roomID;
+    socket.emit("answer", { sender_id, reciver_id, shareableLink });
 
     socket.emit("answer", {});
     zp.joinRoom({

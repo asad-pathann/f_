@@ -90,13 +90,13 @@ const VedeoMainSection = () => {
       {/* Video Container */}
       <div className="relative group bg-black   flex items-center justify-center overflow-hidden">
         <video
-          ref={videoRef}
-          onTimeUpdate={handleTimeUpdate}
-          onEnded={() => setIsPlaying(false)}
-          className="w-full h-[450px] object-cover cursor-pointer"
-          onClick={togglePlay}
-          poster="https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80"
-          src="https://assets.mixkit.co/videos/preview/mixkit-car-driving-on-a-street-in-a-city-41554-large.mp4"
+          src="/vedio.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          controls
+          className="w-full h-[450px] object-cover rounded-lg"
         />
 
         {/* Video Overlay Controls */}

@@ -5,6 +5,7 @@ import io from "socket.io-client";
 const socket = io.connect("http://localhost:5441");
 
 const CallToast = ({ userName }) => {
+  const [mydata, setMydata] = useState(null);
   const [toast, setToast] = useState({ visible: false, callerName: "" });
   const timerRef = useRef(null);
 
@@ -35,8 +36,18 @@ const CallToast = ({ userName }) => {
     };
   }, [showCallToast]);
 
+  useEffect(() => {
+    socket.on("answer_call", (data) => {
+      setMydata(data);
+      console.log(data);
+    });
+  });
+
   const handleIgnore = () => {};
-  const handleAnswer = () => {};
+
+  const handleAnswer = () => {
+    window.location.assign(mydata?.shareableLink, "_blank");
+  };
   return (
     <div className="fixed flex flex-col bg-white dark:bg-gray-800 border-l-4 p-2  rounded-md  top-5 right-5 z-50 animate-slide-in">
       <div className="flex items-center gap-3  border-green-500 rounded-lg shadow-2xl px-5 py-4 min-w-[320px] max-w-md">

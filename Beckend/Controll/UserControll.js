@@ -10,6 +10,13 @@ export const register = async (req, res) => {
       req.body;
 
     // 1. Validation check (FIX: month ko bhi add kar diya hai)
+    // 3. Generate OTP
+    let otp = otpGenerator.generate(6, {
+      digits: true,
+      upperCaseAlphabets: false,
+      lowerCaseAlphabets: false,
+      specialChars: false,
+    });
     if (
       !f_name ||
       !l_name ||
@@ -18,7 +25,8 @@ export const register = async (req, res) => {
       !date ||
       !month ||
       !year ||
-      !gander
+      !gander ||
+      !otp
     ) {
       return res.status(400).json({ message: "All fields are required!" });
     }
@@ -28,14 +36,6 @@ export const register = async (req, res) => {
     if (checkEmail) {
       return res.status(400).json({ message: "Email already exists!" });
     }
-
-    // 3. Generate OTP
-    let otp = otpGenerator.generate(6, {
-      digits: true,
-      upperCaseAlphabets: false,
-      lowerCaseAlphabets: false,
-      specialChars: false,
-    });
 
     // 4. Hash Password
     const hashPassword = await bcrypt.hash(password, 10);

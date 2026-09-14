@@ -230,6 +230,7 @@ const ReelMainContent = () => {
                 alt={currentReel.username}
                 className="w-10 h-10 rounded-full border-2 border-blue-500 object-cover shadow"
               />
+
               <div className="flex flex-col">
                 <div className="flex items-center space-x-1.5">
                   <span className="font-bold text-sm text-white drop-shadow">
@@ -285,15 +286,13 @@ const ReelMainContent = () => {
           onClick={togglePlayPause}
         >
           <video
-            ref={videoRef}
-            src={currentReel.videoUrl}
-            className="w-full h-full object-cover"
+            src="/video_3.mp4"
             autoPlay
             loop
+            muted
             playsInline
-            muted={isMuted}
-            onTimeUpdate={handleTimeUpdate}
-            onEnded={handleNext}
+            controls
+            className="w-full  h-full object-cover rounded-lg"
           />
 
           {/* Pause Center Overlay Icon */}
@@ -304,7 +303,6 @@ const ReelMainContent = () => {
               </div>
             </div>
           )}
-
           {/* Animated Floating Emoji Effects */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none z-20">
             {floatingReactions.map((item) => (
@@ -317,7 +315,6 @@ const ReelMainContent = () => {
               </div>
             ))}
           </div>
-
           {}
           <div
             className="absolute right-3 bottom-24 z-30 flex flex-col items-center space-y-4"

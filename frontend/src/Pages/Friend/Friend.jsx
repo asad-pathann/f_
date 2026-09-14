@@ -18,7 +18,9 @@ const Friends = () => {
   // HAMESHA CHECK KAREIN: Aapke store.js mein slice ka naam 'auth' hai ya 'user'?
   // Agar slice ka naam 'user' hai toh state.user likhein.
   const { allUsers, userLoading, user } = useSelector((state) => state.auth);
+
   const navigate = useNavigate();
+  
   useEffect(() => {
     dispatch(GetalluserData());
     // dispatch(userReset()); // <-- Isko comment/remove kar diya taake data fetch hote hi reset na ho jaye

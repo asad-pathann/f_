@@ -263,6 +263,7 @@ const GetpostData = ({
           </div>
           <div className="flex gap-2 items-center">
             <CommentModel
+              className={"border-0"}
               caption={caption}
               background={background}
               post_id={_id}

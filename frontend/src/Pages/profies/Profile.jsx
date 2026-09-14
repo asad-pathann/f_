@@ -31,6 +31,7 @@ const Profile = () => {
   const dispacth = useDispatch();
 
   const item = location.state || {};
+
   const currentProfile = Object.keys(item).length > 0 ? item : user;
 
   useEffect(() => {
@@ -55,11 +56,16 @@ const Profile = () => {
   // ✅ FIX 3: user ko dependency mein daalein taake listener stale na ho
   useEffect(() => {
     socket.on("received_calling", (data) => {
-      console.log("Calling data:", data);
+      // console.log("Calling data:", data);
       if (data?.reciver_id == user?._id) {
         setOpenToast(true);
         setUserName(data?.sender_f_name);
       }
+
+      const audio = new Audio("/ring_2.mp3");
+
+      audio.loop = true;
+      audio.play();
     });
 
     // ✅ Cleanup bhi add karein (memory leak se bachne ke liye)
@@ -106,12 +112,10 @@ const Profile = () => {
 
             {/* Name and Friend Count */}
             <div className="flex flex-col -translate-y-10 lg:translate-y-0 text-center lg:text-left">
-              <p className="text-xl font-bold text-gray-900">
-                {myinfo?.f_name} &nbsp; {myinfo?.l_name}
+              <p className="text-4xl flex capitalize  gap-2 font-bold text-gray-900">
+                {myinfo?.f_name} <span>{myinfo?.l_name}</span>
               </p>
-              <p className="text-gray-500 font-medium">
-                {friendsCount} friends
-              </p>
+              <p className="text-gray-500 font-medium">1.7k friends</p>
             </div>
           </div>
 

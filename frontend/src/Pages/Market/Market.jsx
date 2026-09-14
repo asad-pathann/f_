@@ -231,6 +231,7 @@ function SidebarMenuLink({
             {label}
           </span>
         </div>
+
         {hasArrow && <ChevronRight size={18} className="text-[#65676B]" />}
       </div>
     </li>
