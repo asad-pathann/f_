@@ -17,6 +17,7 @@ import MessagePanel from "./Pages/chats/MessagePanel";
 import Reels from "./Pages/ReelsPage/Reels";
 import VideoCallZego from "../vedio_call/VedioCall";
 import MiniToast from "../vedio_call/RingToast";
+import EventsPage from "./Pages/enevts/EventsPage";
 
 const App = () => {
   const { show, setShow } = useState(false);
@@ -42,6 +43,8 @@ const App = () => {
           <Route path="/profile/:id" element={<Profile />} />
           <Route path="/otp" element={<Otp />} />
           <Route path="/reel" element={<Reels />} />
+          <Route path="/event" element={<EventsPage />} />
+          <Route path="/feeds" element={<EventsPage />} />
           <Route
             path="/vedio-call/:sender_id/:reciver_id"
             element={<VideoCallZego />}

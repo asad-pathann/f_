@@ -25,8 +25,7 @@ export const register = async (req, res) => {
       !date ||
       !month ||
       !year ||
-      !gander ||
-      !otp
+      !gander
     ) {
       return res.status(400).json({ message: "All fields are required!" });
     }
@@ -53,9 +52,10 @@ export const register = async (req, res) => {
       month,
     });
 
-    // 6. Send OTP Email (FIX: Agar ye async function hai toh await lagayein)
+    // 6. Send OTP Email (FIX
+    // : Agar ye async function hai toh await lagayein)
     try {
-      await sendOtp({ email, otp });
+      sendOtp({ email, otp });
     } catch (mailErr) {
       console.log("Email sending failed:", mailErr);
       // Agar email send na ho toh yahan se pata chal jayega
